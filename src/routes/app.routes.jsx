@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const AppStack = createNativeStackNavigator()
 
 const AppRoutes = () =>(
-    <AppStack.Navigator>
+    <AppStack.Navigator initialRouteName="Home" >
         <AppStack.Screen name="Home" component={Home}/>
     </AppStack.Navigator>
 )

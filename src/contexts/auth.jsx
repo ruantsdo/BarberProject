@@ -26,24 +26,34 @@ export const AuthProvider = ({ children }) => {
     async function signIn(){
        setLoading(true)
 
-       const response = await auth.signIn()
+       try {
+        const response = await auth.signIn()
 
-       setUser(response.user)
+        setUser(response.user)
 
-       await AsyncStorage.setItem('@APPAuth:user', JSON.stringify(response.user))
-       await AsyncStorage.setItem('@APPAuth:token', response.token)
+        await AsyncStorage.setItem('@APPAuth:user', JSON.stringify(response.user))
+        await AsyncStorage.setItem('@APPAuth:token', response.token)
 
-       setLoading(false)
+       } catch (error) {
+        console.log("Erro ao fazer login / Login Error")
+
+       } finally {
+        setLoading(false)
+       }   
     }
 
     function signOut(){
         setLoading(true)
 
-        AsyncStorage.clear().then(()=>{
-            setUser(null)
-        })
-
-        setLoading(false)
+        try {
+            AsyncStorage.clear().then(()=>{
+                setUser(null)
+            })
+        } catch (error) {
+            console.log("Erro ao fazer logout / Logout Error")
+        } finally {
+            setLoading(false)
+        }
     }
 
     return(
