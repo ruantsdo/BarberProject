@@ -15,7 +15,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons"
 
 
 const SignIn = ({ navigation }) => {
-    const { signIn } = useContext(AuthContext)
+    const { signIn, setUser } = useContext(AuthContext)
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -25,6 +25,7 @@ const SignIn = ({ navigation }) => {
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
+            setUser(user)
             console.log(user)
         })
         .catch((error) => {
