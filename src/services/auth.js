@@ -11,3 +11,5 @@ export function signIn(){
         }, 2000)
     })
 }
+
+//EXCLUIR APÓS ORGANIZAÇÃO DO CODIGO

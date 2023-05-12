@@ -1,6 +1,3 @@
-//INSTALAR A LIB CORRETA PARA MOBILE ***SUPOSTAMENTE JÁ ESTÁ FEITO
-//ATUALIZAR AS IMPORTAÇÕES DE ACORDO COM A DOC
-
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 

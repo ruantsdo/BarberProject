@@ -1,7 +1,11 @@
+//React
 import React from "react";
-import Home from "../pages/Home";
 
+//React Navigation
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+//Pages
+import Home from "../pages/Home";
 
 const AppStack = createNativeStackNavigator()
 

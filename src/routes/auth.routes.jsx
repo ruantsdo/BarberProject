@@ -1,8 +1,12 @@
+//React
 import React from "react";
+
+//React Navigation
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+//Pages
 import SignIn from "../pages/SignIn";
 import UserRegister from "../pages/UserRegister";
-
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const AuthStack = createNativeStackNavigator()
 

@@ -2,10 +2,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 
-//Firebase
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../services/firebase";
-
 //Contexts
 import AuthContext from "../../contexts/auth";
 
@@ -13,35 +9,18 @@ import AuthContext from "../../contexts/auth";
 import styles from './styles'
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
+import { auth } from "../../services/firebase";
+
 
 const SignIn = ({ navigation }) => {
-    const { signIn, setUser } = useContext(AuthContext)
+    const { signInWithEmail, loginError, setLoginError ,errorText, setRegisterError } = useContext(AuthContext)
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [error, setError] = useState(false)
-
-    const loginFirebase = () => {
-        signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            setUser(user)
-            console.log(user)
-        })
-        .catch((error) => {
-            setError(true)
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        });
-    }
 
     useEffect(()=>{
-
+        setRegisterError(false)
     }, [])
-
-    function handleSignIn(){
-        signIn()
-    }
 
     return(
         <KeyboardAvoidingView 
@@ -55,6 +34,7 @@ const SignIn = ({ navigation }) => {
                 placeholder="Email"
                 type="text"
                 onChangeText={(text) => setEmail(text)}
+                onChange={()=> setLoginError(false)}
                 value={email}
             />
             <TextInput 
@@ -63,9 +43,10 @@ const SignIn = ({ navigation }) => {
                 placeholder="Senha"
                 type="text"
                 onChangeText={(text) => setPassword(text)}
+                onChange={()=> setLoginError(false)}
                 value={password}
             />
-            {error === true ? 
+            {loginError === true ? 
             <View style={styles.contentAlert}>
                 <MaterialCommunityIcons 
                     name="alert-circle"
@@ -87,7 +68,7 @@ const SignIn = ({ navigation }) => {
             :
             <TouchableOpacity 
                 style={styles.buttonLogin}
-                onPress={loginFirebase}
+                onPress={() => signInWithEmail(auth, email, password)}
             >
                 <Text style={styles.textButtonLogin}>Entrar</Text>
             </TouchableOpacity>              
@@ -100,13 +81,6 @@ const SignIn = ({ navigation }) => {
             </Text>
             <View style={{height:10}}/>
         </KeyboardAvoidingView>   
-        
-        /*
-        <View style={{flex:1, justifyContent: 'center', alignItems:'center'}}>
-                <Button title="Entrar" onPress={handleSignIn} />
-                <Button title="Cadastro" onPress={() => navigation.navigate('UserRegister')} />
-        </View>
-        */
     )
 }
 

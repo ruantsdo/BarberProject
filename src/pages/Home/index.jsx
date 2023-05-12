@@ -1,16 +1,21 @@
+//React 
 import React, { useContext } from "react";
 import { View, Button, Text } from "react-native";
+
+//Contexts
 import AuthContext from "../../contexts/auth";
 
-const Home = () => {
-    const {signOut, user} = useContext(AuthContext)
+//Firebase
+import { auth } from "../../services/firebase";
 
+const Home = () => {
+    const {firebaseSignOut, user} = useContext(AuthContext)
 
     return(
         <View style={{flex:1, justifyContent: 'center', alignItems:'center'}}>
             <Text>Logado como: {user?.displayName}</Text>
             <Text>Email: {user?.email}</Text>
-            <Button title="Sair" onPress={signOut} />
+            <Button title="Sair" onPress={() => firebaseSignOut(auth)} />
         </View>
     )
 }

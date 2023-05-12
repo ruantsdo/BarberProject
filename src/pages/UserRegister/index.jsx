@@ -1,42 +1,26 @@
 //React
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 
 //Styles
 import styles from "./styles"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
-//Firebase
-import { auth } from "../../services/firebase"
-import { createUserWithEmailAndPassword } from "firebase/auth"
-
 //Contexts
 import AuthContext from "../../contexts/auth"
 
-const UserRegister = ({ navigation }) => {
-    const { setUser } = useContext(AuthContext)
+import { auth } from "../../services/firebase";
 
+const UserRegister = () => {
+    const { resgisterWithEmail, registerError, setRegisterError ,errorText, setLoginError } = useContext(AuthContext)
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [displayName, setDisplayName] = useState("")
-    const [error, setError] = useState(false)
 
-    const register = () =>{
-        createUserWithEmailAndPassword(auth, email, password, displayName)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            setUser(user)
-        })
-        .catch((error) => {
-            setError(true)
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        });
-    }
-
-
-
+    useEffect(()=>{
+        setLoginError(false)
+    }, [])
 
     return(
         <KeyboardAvoidingView 
@@ -49,6 +33,7 @@ const UserRegister = ({ navigation }) => {
                 placeholder="Informe um email válido"
                 type="text"
                 onChangeText={(text) => setEmail(text)}
+                onChange={()=> setRegisterError(false)}
                 value={email}
             />
             <TextInput 
@@ -57,6 +42,7 @@ const UserRegister = ({ navigation }) => {
                 placeholder="Digite sua nova senha"
                 type="text"
                 onChangeText={(text) => setPassword(text)}
+                onChange={()=> setRegisterError(false)}
                 value={password}
             />
             <TextInput 
@@ -67,14 +53,14 @@ const UserRegister = ({ navigation }) => {
                 value={displayName}
             />
 
-            {error === true ? 
+            {registerError === true ? 
                 <View style={styles.contentAlert}>
                     <MaterialCommunityIcons 
                         name="alert-circle"
                         size={24}
                         color="#bdbdbd"
                     />
-                    <Text style={styles.warningAlert}>Email ou Senha Inválidos</Text>
+                    <Text style={styles.warningAlert}>Erro ao tentar fazer o cadastro.</Text>
                 </View>
             :
                 <View></View>
@@ -89,7 +75,7 @@ const UserRegister = ({ navigation }) => {
             :
                 <TouchableOpacity 
                     style={styles.buttonRegister}
-                    onPress={register}
+                    onPress={() => resgisterWithEmail( auth, email, password, displayName )}
                 >
                     <Text style={styles.textButtonRegister}>Cadastrar</Text>
                 </TouchableOpacity>              
