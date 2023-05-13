@@ -19,18 +19,19 @@ export const AuthProvider = ({ children }) => {
     const [errorText, setErrorText] = useState("")
 
     useEffect(()=>{
-        async function loadStoragedData(){
-            const storagedUser = await AsyncStorage.getItem('@APPAuth:user')
+        loadStoragedData()
+    }, [])
 
-            if(storagedUser){
-                setUser(JSON.parse(storagedUser))
-                setLoading(false)
-            }
+    async function loadStoragedData(){
+        const storagedUser = await AsyncStorage.getItem('@APPAuth:user')
+
+        if(storagedUser){
+            setUser(JSON.parse(storagedUser))
+            setLoading(false)
         }
 
         setLoading(false)
-        loadStoragedData()
-    }, [])
+    }
 
     async function signInWithEmail(auth, email , password){
         setLoading(true)
@@ -51,11 +52,13 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)   
     }
 
-    async function resgisterWithEmail(auth, email, password, displayName){
-        await createUserWithEmailAndPassword(auth, email, password, displayName)
+    async function resgisterWithEmail(auth, email, password){
+        setLoading(true)
+
+        await createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
-            AsyncStorage.setItem('@APPAuth:user', JSON.stringify(response.user))
+            AsyncStorage.setItem('@APPAuth:user', JSON.stringify(user))
             
             setUser(user)  
         })
@@ -65,6 +68,8 @@ export const AuthProvider = ({ children }) => {
             const errorCode = error.code;
             const errorMessage = error.message;
         });
+
+        setLoading(false)
     }
 
     async function firebaseSignOut(auth){

@@ -32,7 +32,7 @@ const SignIn = ({ navigation }) => {
             <TextInput 
                 style={styles.input}
                 placeholder="Email"
-                type="text"
+                type="email"
                 onChangeText={(text) => setEmail(text)}
                 onChange={()=> setLoginError(false)}
                 value={email}

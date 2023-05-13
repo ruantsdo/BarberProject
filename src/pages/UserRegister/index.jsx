@@ -27,11 +27,12 @@ const UserRegister = () => {
             style={styles.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
+
             <Text style={styles.title}>Criar uma conta</Text>
             <TextInput 
                 style={styles.input}
                 placeholder="Informe um email válido"
-                type="text"
+                type="email"
                 onChangeText={(text) => setEmail(text)}
                 onChange={()=> setRegisterError(false)}
                 value={email}
@@ -75,12 +76,12 @@ const UserRegister = () => {
             :
                 <TouchableOpacity 
                     style={styles.buttonRegister}
-                    onPress={() => resgisterWithEmail( auth, email, password, displayName )}
+                    onPress={() => resgisterWithEmail( auth, email, password )}
                 >
                     <Text style={styles.textButtonRegister}>Cadastrar</Text>
                 </TouchableOpacity>              
             }
-
+            <View style={{height:10}}/>
         </KeyboardAvoidingView>
     )
 }
