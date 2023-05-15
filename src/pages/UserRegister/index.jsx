@@ -76,7 +76,7 @@ const UserRegister = () => {
             :
                 <TouchableOpacity 
                     style={styles.buttonRegister}
-                    onPress={() => resgisterWithEmail( auth, email, password )}
+                    onPress={() => resgisterWithEmail( auth, email, password, displayName )}
                 >
                     <Text style={styles.textButtonRegister}>Cadastrar</Text>
                 </TouchableOpacity>              

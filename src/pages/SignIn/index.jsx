@@ -13,7 +13,7 @@ import { auth } from "../../services/firebase";
 
 
 const SignIn = ({ navigation }) => {
-    const { signInWithEmail, loginError, setLoginError ,errorText, setRegisterError } = useContext(AuthContext)
+    const { signInWithEmail, loginError, setLoginError ,errorText, setRegisterError, writeInDB } = useContext(AuthContext)
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")

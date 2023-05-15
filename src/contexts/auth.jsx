@@ -6,6 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Firebase
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { db } from '../services/firebase'
+import { doc, setDoc } from "firebase/firestore"
 
 //Contexts Calls
 const AuthContext = createContext({ signed: true })
@@ -52,17 +54,20 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)   
     }
 
-    async function resgisterWithEmail(auth, email, password){
+    async function resgisterWithEmail(auth, email, password, displayName){
         setLoading(true)
 
-        await createUserWithEmailAndPassword(auth, email, password)
+        await createUserWithEmailAndPassword(auth, email, password, displayName)
         .then((userCredential) => {
             const user = userCredential.user;
+            const uid = user.uid
+
             AsyncStorage.setItem('@APPAuth:user', JSON.stringify(user))
-            
-            setUser(user)  
-        })
-        .catch((error) => {
+
+            writeInDB(uid, email, displayName)
+
+            setUser(user)
+        }).catch((error) => {
             setRegisterError(true)
             setErrorText("Erro ao fazer o cadastro / Register Error")
             const errorCode = error.code;
@@ -87,6 +92,13 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)
     }
 
+    async function writeInDB(uid, email, displayName){
+        await setDoc(doc(db, "users", uid), {
+            name: displayName,
+            email: email,
+          });
+    }
+
     return(
         <AuthContext.Provider 
             value={{ 
@@ -102,7 +114,8 @@ export const AuthProvider = ({ children }) => {
                     registerError,
                     setRegisterError, 
                     signOutError,
-                    setSignOutError 
+                    setSignOutError,
+                    writeInDB,
                 }}>
             {children}
         </AuthContext.Provider>

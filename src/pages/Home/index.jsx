@@ -1,5 +1,5 @@
 //React 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Button, Text } from "react-native";
 
 //Contexts
@@ -13,7 +13,7 @@ const Home = () => {
 
     return(
         <View style={{flex:1, justifyContent: 'center', alignItems:'center'}}>
-            <Text>Logado como: {user?.displayName}</Text>
+            <Text>Logado como: {user?.uid}</Text>
             <Text>Email: {user?.email}</Text>
             <Button title="Sair" onPress={() => firebaseSignOut(auth)} />
         </View>
