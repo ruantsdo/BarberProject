@@ -7,13 +7,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //Firebase
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { db } from '../services/firebase'
-import { doc, setDoc } from "firebase/firestore"
+import { doc, setDoc, getDoc } from "firebase/firestore"
 
 //Contexts Calls
 const AuthContext = createContext({ signed: true })
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
+    const [token, setToken] = useState(null)
     const [loading, setLoading] = useState(true)
     const [loginError, setLoginError] = useState(false)
     const [registerError, setRegisterError] = useState(false)
@@ -21,14 +22,19 @@ export const AuthProvider = ({ children }) => {
     const [errorText, setErrorText] = useState("")
 
     useEffect(()=>{
+        console.log("Entrou no useeffect")
+
         loadStoragedData()
     }, [])
 
     async function loadStoragedData(){
-        const storagedUser = await AsyncStorage.getItem('@APPAuth:user')
+        const storagedToken = await AsyncStorage.getItem('@APPAuth:token')
 
-        if(storagedUser){
-            setUser(JSON.parse(storagedUser))
+        if(storagedToken){
+            console.log("Entrou no IF")
+
+            setToken(JSON.parse(storagedToken))
+            console.log("Uma linha depois do setToken")
             setLoading(false)
         }
 
@@ -40,9 +46,12 @@ export const AuthProvider = ({ children }) => {
 
         await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            const user = userCredential.user;
-            AsyncStorage.setItem('@APPAuth:user', JSON.stringify(user))
-            setUser(user)  
+            const response = userCredential.user;
+            AsyncStorage.setItem('@APPAuth:token', JSON.stringify(response))
+        
+            console.log(response.uid)
+
+            setToken(response)
         })
         .catch((error) => {
             setLoginError(true)
@@ -59,14 +68,13 @@ export const AuthProvider = ({ children }) => {
 
         await createUserWithEmailAndPassword(auth, email, password, displayName)
         .then((userCredential) => {
-            const user = userCredential.user;
-            const uid = user.uid
+            const response = userCredential.user;
 
-            AsyncStorage.setItem('@APPAuth:user', JSON.stringify(user))
+            AsyncStorage.setItem('@APPAuth:token', JSON.stringify(response))
 
-            writeInDB(uid, email, displayName)
+            writeInDB(email, displayName)
 
-            setUser(user)
+            setToken(response)
         }).catch((error) => {
             setRegisterError(true)
             setErrorText("Erro ao fazer o cadastro / Register Error")
@@ -83,6 +91,7 @@ export const AuthProvider = ({ children }) => {
         signOut(auth).then(() => {
             AsyncStorage.clear().then(()=>{
                 setUser(null)
+                setToken(null)
             })
           }).catch((error) => {
             setSignOutError(true)
@@ -99,11 +108,25 @@ export const AuthProvider = ({ children }) => {
           });
     }
 
+    async function handleUserData(){
+        const docRef = doc(db, "users", token.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            setUser(docSnap)
+            console.log("Document data:", docSnap.data());
+        } else {
+        // docSnap.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }
+
     return(
         <AuthContext.Provider 
             value={{ 
-                    signed: !!user, 
+                    signed: !!token, 
                     user, 
+                    token,
                     signInWithEmail, 
                     resgisterWithEmail, 
                     firebaseSignOut, 
@@ -116,6 +139,7 @@ export const AuthProvider = ({ children }) => {
                     signOutError,
                     setSignOutError,
                     writeInDB,
+                    handleUserData,
                 }}>
             {children}
         </AuthContext.Provider>

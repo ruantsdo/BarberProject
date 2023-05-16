@@ -9,12 +9,19 @@ import AuthContext from "../../contexts/auth";
 import { auth } from "../../services/firebase";
 
 const Home = () => {
-    const {firebaseSignOut, user} = useContext(AuthContext)
+    const {firebaseSignOut, user, token, handleUserData } = useContext(AuthContext)
+
+    useEffect(()=>{
+        console.log("Entrou na HOME")
+        console.log("Token UID: ", token.uid)
+
+        handleUserData()
+    },[])
 
     return(
         <View style={{flex:1, justifyContent: 'center', alignItems:'center'}}>
-            <Text>Logado como: {user?.uid}</Text>
-            <Text>Email: {user?.email}</Text>
+            <Text>Logado como: {token?.uid}</Text>
+            <Text>Email: {token?.email}</Text>
             <Button title="Sair" onPress={() => firebaseSignOut(auth)} />
         </View>
     )
