@@ -22,26 +22,18 @@ export const AuthProvider = ({ children }) => {
     const [errorText, setErrorText] = useState("")
 
     useEffect(()=>{
-        console.log("Entrou no useEffect")
-
         loadStoragedData()
     }, [])
 
     async function loadStoragedData(){
-        console.log("Carregando informações")
         const storagedToken = await AsyncStorage.getItem('@APPAuth:token')
         const storagedUser = await AsyncStorage.getItem('@APPAuth:user')
 
         if(storagedToken && storagedUser){
-            console.log("Entrou no IF")
-
             setToken(JSON.parse(storagedToken))
-            console.log("Token definido")
-
             setUser(JSON.parse(storagedUser))
-            console.log("User definido")
+            setLoading(false)
         }
-
         setLoading(false)
     }
 
@@ -51,21 +43,14 @@ export const AuthProvider = ({ children }) => {
         await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const response = userCredential.user;
-            setToken(response.uid).then(() => {
-                AsyncStorage.setItem('@APPAuth:token', JSON.stringify(response))
-                console.log("Token salvo no SignIn", token)
-
-                handleUserData()
-            })
-            
+            AsyncStorage.setItem('@APPAuth:token', JSON.stringify(response))
+            handleUserData(response)
         }).catch((error) => {
             setLoginError(true)
             setErrorText("Erro ao tentar fazer login / Login Error")
             const errorCode = error.code;
             const errorMessage = error.message;
         });
-
-        setLoading(false)   
     }
 
     async function resgisterWithEmail(auth, email, password, displayName){
@@ -113,23 +98,16 @@ export const AuthProvider = ({ children }) => {
           });
     }
 
-    async function handleUserData(){
-        console.log("Entrou no handleUserData")
-
-        const docRef = doc(db, "users", token);
+    async function handleUserData(response){
+        const docRef = doc(db, "users", response.uid);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            //setUser(docSnap.data())
             AsyncStorage.setItem('@APPAuth:user', JSON.stringify(docSnap.data()))
-            console.log("User salvo no handleUserData")
-            //console.log("Document data:", docSnap.data());
+            loadStoragedData()
         } else {
-        // docSnap.data() will be undefined in this case
             console.log("No such document!");
         }
-
-        loadStoragedData()
     }
 
     return(
