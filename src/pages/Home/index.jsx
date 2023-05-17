@@ -15,12 +15,12 @@ const Home = () => {
         console.log("Entrou na HOME")
         console.log("Token UID: ", token.uid)
 
-        handleUserData()
+        console.log("Dados do usuário: ", user.state)
     },[])
 
     return(
         <View style={{flex:1, justifyContent: 'center', alignItems:'center'}}>
-            <Text>Logado como: {token?.uid}</Text>
+            <Text>Logado como: {user?.name}</Text>
             <Text>Email: {token?.email}</Text>
             <Button title="Sair" onPress={() => firebaseSignOut(auth)} />
         </View>
