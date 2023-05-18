@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Firebase
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { db } from '../services/firebase'
+import { auth, db } from '../services/firebase'
 import { doc, setDoc, getDoc } from "firebase/firestore"
 
 //Contexts Calls
@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
     const [errorText, setErrorText] = useState("")
 
     useEffect(()=>{
+        setErrorText("")
         loadStoragedData()
     }, [])
 
@@ -37,7 +38,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)
     }
 
-    async function signInWithEmail(auth, email , password){
+    async function signInWithEmail( email , password){
         setLoading(true)
 
         await signInWithEmailAndPassword(auth, email, password)
@@ -47,27 +48,24 @@ export const AuthProvider = ({ children }) => {
             handleUserData(response)
         }).catch((error) => {
             setLoginError(true)
-            setErrorText("Erro ao tentar fazer login / Login Error")
+            setErrorText("Usuário ou senha inválidos")
             const errorCode = error.code;
             const errorMessage = error.message;
         });
     }
 
-    async function resgisterWithEmail(auth, email, password, displayName){
+    async function resgisterWithEmail( email, password, displayName){
         setLoading(true)
 
         await createUserWithEmailAndPassword(auth, email, password, displayName)
         .then((userCredential) => {
             const response = userCredential.user;
-
             AsyncStorage.setItem('@APPAuth:token', JSON.stringify(response))
-
-            writeInDB(email, displayName)
-
-            setToken(response)
+            writeInDB(response, email, displayName)
+            handleUserData(response)
         }).catch((error) => {
             setRegisterError(true)
-            setErrorText("Erro ao fazer o cadastro / Register Error")
+            setErrorText("Falha ao realizar cadastro")
             const errorCode = error.code;
             const errorMessage = error.message;
         });
@@ -75,7 +73,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)
     }
 
-    async function firebaseSignOut(auth){
+    function firebaseSignOut(){
         setLoading(true)
 
         signOut(auth).then(() => {
@@ -85,14 +83,14 @@ export const AuthProvider = ({ children }) => {
             })
           }).catch((error) => {
             setSignOutError(true)
-            setErrorText("Erro ao fazer logout / Logout Error")
+            setErrorText("Erro ao fazer logout")
           });
 
         setLoading(false)
     }
 
-    async function writeInDB(uid, email, displayName){
-        await setDoc(doc(db, "users", uid), {
+    async function writeInDB(response, email, displayName){
+        await setDoc(doc(db, "users", response.uid), {
             name: displayName,
             email: email,
           });
@@ -106,7 +104,7 @@ export const AuthProvider = ({ children }) => {
             AsyncStorage.setItem('@APPAuth:user', JSON.stringify(docSnap.data()))
             loadStoragedData()
         } else {
-            console.log("No such document!");
+            setErrorText("Erro ao carregar os seus dados");
         }
     }
 
@@ -115,20 +113,20 @@ export const AuthProvider = ({ children }) => {
             value={{ 
                     signed: !!user, 
                     user, 
-                    token,
                     signInWithEmail, 
                     resgisterWithEmail, 
-                    firebaseSignOut, 
+                    firebaseSignOut,
+                    writeInDB,
+                    handleUserData, 
                     loading, 
-                    errorText, 
+                    errorText,
+                    setErrorText, 
                     loginError,
                     setLoginError, 
                     registerError,
                     setRegisterError, 
                     signOutError,
                     setSignOutError,
-                    writeInDB,
-                    handleUserData,
                 }}>
             {children}
         </AuthContext.Provider>

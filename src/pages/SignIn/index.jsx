@@ -9,16 +9,14 @@ import AuthContext from "../../contexts/auth";
 import styles from './styles'
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
-import { auth } from "../../services/firebase";
-
-
 const SignIn = ({ navigation }) => {
-    const { signInWithEmail, loginError, setLoginError ,errorText, setRegisterError, writeInDB } = useContext(AuthContext)
+    const { signInWithEmail, loginError, setLoginError, setRegisterError, setErrorText } = useContext(AuthContext)
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
     useEffect(()=>{
+        setErrorText("")
         setRegisterError(false)
     }, [])
 
@@ -68,7 +66,7 @@ const SignIn = ({ navigation }) => {
             :
             <TouchableOpacity 
                 style={styles.buttonLogin}
-                onPress={() => signInWithEmail(auth, email, password)}
+                onPress={() => signInWithEmail(email, password)}
             >
                 <Text style={styles.textButtonLogin}>Entrar</Text>
             </TouchableOpacity>              

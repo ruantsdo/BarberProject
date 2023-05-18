@@ -6,23 +6,20 @@ import { View, Button, Text } from "react-native";
 import AuthContext from "../../contexts/auth";
 
 //Firebase
-import { auth } from "../../services/firebase";
+
 
 const Home = () => {
-    const {firebaseSignOut, user, token, handleUserData } = useContext(AuthContext)
+    const {firebaseSignOut, user, setErrorText } = useContext(AuthContext)
 
     useEffect(()=>{
-        console.log("Entrou na HOME")
-        console.log("Token UID: ", token.uid)
-
-        console.log("Dados do usuário: ", user.state)
+        setErrorText("")
     },[])
 
     return(
         <View style={{flex:1, justifyContent: 'center', alignItems:'center'}}>
             <Text>Logado como: {user?.name}</Text>
-            <Text>Email: {token?.email}</Text>
-            <Button title="Sair" onPress={() => firebaseSignOut(auth)} />
+            <Text>Email: {user?.country}</Text>
+            <Button title="Sair" onPress={() => firebaseSignOut()} />
         </View>
     )
 }

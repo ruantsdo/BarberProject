@@ -9,16 +9,15 @@ import { MaterialCommunityIcons } from "@expo/vector-icons"
 //Contexts
 import AuthContext from "../../contexts/auth"
 
-import { auth } from "../../services/firebase";
-
 const UserRegister = () => {
-    const { resgisterWithEmail, registerError, setRegisterError ,errorText, setLoginError } = useContext(AuthContext)
+    const { resgisterWithEmail, registerError, setRegisterError, setLoginError, setErrorText } = useContext(AuthContext)
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [displayName, setDisplayName] = useState("")
 
     useEffect(()=>{
+        setErrorText("")
         setLoginError(false)
     }, [])
 
@@ -76,7 +75,7 @@ const UserRegister = () => {
             :
                 <TouchableOpacity 
                     style={styles.buttonRegister}
-                    onPress={() => resgisterWithEmail( auth, email, password, displayName )}
+                    onPress={() => resgisterWithEmail( email, password, displayName )}
                 >
                     <Text style={styles.textButtonRegister}>Cadastrar</Text>
                 </TouchableOpacity>              
