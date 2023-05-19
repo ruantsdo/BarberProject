@@ -14,12 +14,23 @@ const UserRegister = () => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [displayName, setDisplayName] = useState("")
+    const [passwordConfirm, setPasswordConfirm] = useState("")
+    const [name, setName] = useState("")
+    const [birth, setBirth] = useState("")
+    const [passwordCheck, setPasswordCheck] = useState(true)
 
     useEffect(()=>{
         setErrorText("")
         setLoginError(false)
     }, [])
+
+    useEffect(()=>{
+        if(password === passwordConfirm){
+            setPasswordCheck(true)
+        } else {
+            setPasswordCheck(false)
+        }
+    },[password, passwordConfirm])
 
     return(
         <KeyboardAvoidingView 
@@ -30,11 +41,25 @@ const UserRegister = () => {
             <Text style={styles.title}>Criar uma conta</Text>
             <TextInput 
                 style={styles.input}
+                placeholder="Digite seu nome"
+                type="text"
+                onChangeText={(text) => setName(text)}
+                value={name}
+            />
+            <TextInput 
+                style={styles.input}
                 placeholder="Informe um email válido"
                 type="email"
                 onChangeText={(text) => setEmail(text)}
                 onChange={()=> setRegisterError(false)}
                 value={email}
+            />
+            <TextInput 
+                style={styles.input}
+                placeholder="Data de nascimento"
+                type="text"
+                onChangeText={(text) => setBirth(text)}
+                value={birth}
             />
             <TextInput 
                 style={styles.input}
@@ -47,12 +72,13 @@ const UserRegister = () => {
             />
             <TextInput 
                 style={styles.input}
-                placeholder="Digite seu nome de usuário"
+                secureTextEntry={true}
+                placeholder="Confirme a senha"
                 type="text"
-                onChangeText={(text) => setDisplayName(text)}
-                value={displayName}
+                onChangeText={(text) => setPasswordConfirm(text)}
+                onChange={()=> setRegisterError(false)}
+                value={passwordConfirm}
             />
-
             {registerError === true ? 
                 <View style={styles.contentAlert}>
                     <MaterialCommunityIcons 
@@ -65,7 +91,12 @@ const UserRegister = () => {
             :
                 <View></View>
             }
-            {email === "" || password === "" ? 
+            {passwordCheck === false ?
+                <Text style={styles.warningAlert}>As senhas devem ser iguais.</Text> 
+                :
+                <View style={{height:10}}/>
+            }
+            {name === "" || email === "" || birth === "" || password === "" || passwordConfirm === "" && passwordCheck === true ? 
                 <TouchableOpacity 
                     disabled={true}
                     style={styles.buttonRegister}
@@ -75,7 +106,7 @@ const UserRegister = () => {
             :
                 <TouchableOpacity 
                     style={styles.buttonRegister}
-                    onPress={() => resgisterWithEmail( email, password, displayName )}
+                    onPress={() => resgisterWithEmail( name, email, birth, password )}
                 >
                     <Text style={styles.textButtonRegister}>Cadastrar</Text>
                 </TouchableOpacity>              

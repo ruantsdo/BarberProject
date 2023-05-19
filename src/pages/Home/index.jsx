@@ -18,7 +18,7 @@ const Home = () => {
     return(
         <View style={{flex:1, justifyContent: 'center', alignItems:'center'}}>
             <Text>Logado como: {user?.name}</Text>
-            <Text>Email: {user?.country}</Text>
+            <Text>Email: {user?.email}</Text>
             <Button title="Sair" onPress={() => firebaseSignOut()} />
         </View>
     )

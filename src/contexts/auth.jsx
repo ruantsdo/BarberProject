@@ -54,14 +54,14 @@ export const AuthProvider = ({ children }) => {
         });
     }
 
-    async function resgisterWithEmail( email, password, displayName){
+    async function resgisterWithEmail( name, email, birth, password){
         setLoading(true)
 
-        await createUserWithEmailAndPassword(auth, email, password, displayName)
+        await createUserWithEmailAndPassword(auth, email, password )
         .then((userCredential) => {
             const response = userCredential.user;
             AsyncStorage.setItem('@APPAuth:token', JSON.stringify(response))
-            writeInDB(response, email, displayName)
+            writeUserInDB(response, name, email, birth )
             handleUserData(response)
         }).catch((error) => {
             setRegisterError(true)
@@ -89,10 +89,11 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)
     }
 
-    async function writeInDB(response, email, displayName){
+    async function writeUserInDB(response, name, email, birth ){
         await setDoc(doc(db, "users", response.uid), {
-            name: displayName,
+            name: name,
             email: email,
+            birth: birth,
           });
     }
 
@@ -116,7 +117,7 @@ export const AuthProvider = ({ children }) => {
                     signInWithEmail, 
                     resgisterWithEmail, 
                     firebaseSignOut,
-                    writeInDB,
+                    writeUserInDB,
                     handleUserData, 
                     loading, 
                     errorText,

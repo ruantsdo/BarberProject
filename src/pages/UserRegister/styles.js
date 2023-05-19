@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         paddingTop: Platform.OS === 'ios' ? 0 : 50,
     },
     title:{
-        fontSize: 48,
+        fontSize: 32,
         marginBottom: 10,
         fontWeight: "bold",
     },
