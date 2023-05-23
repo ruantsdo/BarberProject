@@ -12,17 +12,23 @@ import Routes from './src/routes';
 //Contexts
 import { AuthProvider } from './src/contexts/auth';
 
+//Styles
+import { ThemeProvider } from 'styled-components';
+import { DefaultTheme } from './src/themes/colors&sizes.theme'
+
 //Notification Bar Calc
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight ? StatusBar.currentHeight : 0
 
 export default function App() {
   return (
     <NavigationContainer>
-      <AuthProvider>
-        <SafeAreaView style={styles.container}>
-          <Routes />
-        </SafeAreaView>
-      </AuthProvider>
+      <ThemeProvider theme={DefaultTheme}>
+        <AuthProvider>
+          <SafeAreaView style={styles.container}>
+            <Routes />
+          </SafeAreaView>
+        </AuthProvider>
+      </ThemeProvider>
     </NavigationContainer>
   );
 }

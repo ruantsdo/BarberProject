@@ -1,13 +1,21 @@
 //React
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
+import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Image } from "react-native";
 
 //Contexts
 import AuthContext from "../../contexts/auth";
 
 //Styles
 import styles from './styles'
+import { DefaultTheme } from "../../themes/colors&sizes.theme"
+import { GS } from '../../styles/global.styles'
+
+//Icons
 import { MaterialCommunityIcons } from "@expo/vector-icons"
+
+// Material UI
+import { TextInput } from "@react-native-material/core"
+
 
 const SignIn = ({ navigation }) => {
     const { signInWithEmail, loginError, setLoginError, setRegisterError, setErrorText } = useContext(AuthContext)
@@ -22,63 +30,71 @@ const SignIn = ({ navigation }) => {
 
     return(
         <KeyboardAvoidingView 
-            style={styles.container}
+            style={GS.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
+            <View style={styles.imgContainer}>
+                <Image 
+                    style={styles.img}
+                    source={require('../../../assets/imgs/login-logo.png')}
+                />
+            </View>
 
-            <Text style={styles.title}>BarberApp</Text>
+            <Text style={GS.titleBig}>BarberApp</Text>
             <TextInput 
-                style={styles.input}
-                placeholder="Email"
-                type="email"
+                style={GS.textInput}
+                color={DefaultTheme.color.tertiary}
+                label="Email"
+                type="text"
                 onChangeText={(text) => setEmail(text)}
                 onChange={()=> setLoginError(false)}
                 value={email}
             />
             <TextInput 
-                style={styles.input}
+                style={GS.textInput}
                 secureTextEntry={true}
-                placeholder="Senha"
+                label="Senha"
+                color={DefaultTheme.color.tertiary}
                 type="text"
                 onChangeText={(text) => setPassword(text)}
                 onChange={()=> setLoginError(false)}
                 value={password}
             />
             {loginError === true ? 
-            <View style={styles.contentAlert}>
+            <View style={GS.alertContainer}>
                 <MaterialCommunityIcons 
                     name="alert-circle"
                     size={24}
-                    color="#bdbdbd"
+                    color={DefaultTheme.color.gray}
                 />
-                <Text style={styles.warningAlert}>Email ou Senha Inválidos</Text>
+                <Text style={GS.alertText}>Email ou Senha Inválidos</Text>
             </View>
             :
-                <View></View>
+            <View />
             }
             {email === "" || password === "" ? 
             <TouchableOpacity 
                 disabled={true}
-                style={styles.buttonLogin}
+                style={GS.button}
             >
-                <Text style={styles.textButtonLogin}>Entrar</Text>
+                <Text style={GS.textButton}>Entrar</Text>
             </TouchableOpacity>  
             :
             <TouchableOpacity 
-                style={styles.buttonLogin}
+                style={GS.button}
                 onPress={() => signInWithEmail(email, password)}
             >
-                <Text style={styles.textButtonLogin}>Entrar</Text>
+                <Text style={GS.textButton}>Entrar</Text>
             </TouchableOpacity>              
             }
             <Text style={styles.registration}>
-                Ainda não tem uma conta?
-                <Text style={styles.linkSubscribe} onPress={() => navigation.navigate("UserRegister")}>
+                Ainda não tem uma conta?   
+            </Text>
+            <Text style={styles.linkSubscribe} onPress={() => navigation.navigate("UserRegister")}>
                 Cadastre-se
-                </Text>
             </Text>
             <View style={{height:10}}/>
-        </KeyboardAvoidingView>   
+        </KeyboardAvoidingView >   
     )
 }
 

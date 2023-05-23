@@ -1,16 +1,21 @@
 //React
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
+import { Modal, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 
 //Styles
 import styles from "./styles"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { DefaultTheme } from "../../themes/colors&sizes.theme";
+import { GS } from '../../styles/global.styles'
+
+// Material UI
+import { TextInput } from "@react-native-material/core"
 
 //Contexts
 import AuthContext from "../../contexts/auth"
 
 // Date Picker
-import DatePicker, { getFormatedDate, getToday } from 'react-native-modern-datepicker'
+import DatePicker from "react-native-modern-datepicker";
 
 const UserRegister = () => {
     const { resgisterWithEmail, registerError, setRegisterError, setLoginError, setErrorText } = useContext(AuthContext)
@@ -37,21 +42,22 @@ const UserRegister = () => {
 
     return(
         <KeyboardAvoidingView 
-            style={styles.container}
+            style={GS.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-
-            <Text style={styles.title}>Criar uma conta</Text>
+            <Text style={GS.titleSmall}>Crie sua conta</Text>
             <TextInput 
-                style={styles.input}
-                placeholder="Digite seu nome"
+                style={GS.textInput}
+                color={DefaultTheme.color.tertiary}
+                label="Digite seu nome"
                 type="text"
                 onChangeText={(text) => setName(text)}
                 value={name}
             />
             <TextInput 
-                style={styles.input}
-                placeholder="Informe um email válido"
+                style={GS.textInput}
+                color={DefaultTheme.color.tertiary}
+                label="Informe seu email"
                 type="email"
                 onChangeText={(text) => setEmail(text)}
                 onChange={()=> setRegisterError(false)}
@@ -59,8 +65,9 @@ const UserRegister = () => {
             />
             <TextInput 
                 showSoftInputOnFocus={false}
-                style={styles.input}
-                placeholder="Data de nascimento"
+                style={GS.textInput}
+                color={DefaultTheme.color.tertiary}
+                label="Data de nascimento"
                 onPressIn={() => setOpenCalendar(!openCalendar)}
                 value={birth}
             />
@@ -73,8 +80,9 @@ const UserRegister = () => {
                     <View style={styles.modalView}>
                         <DatePicker 
                             mode='calendar'
-                            selected={birth}
-                            onSelectedChange={date => setBirth(getFormatedDate(new Date(), "DD/MM/YYYY"))}
+                            date={birth}
+                            onDateChange={(date) => setBirth(date)}
+                            locale="de"
                         />
                         <TouchableOpacity onPress={() => setOpenCalendar(!openCalendar)}>
                             <Text>Voltar</Text>
@@ -83,55 +91,56 @@ const UserRegister = () => {
                 </View>
             </Modal>
             <TextInput 
-                style={styles.input}
+                style={GS.textInput}
+                color={DefaultTheme.color.tertiary}
+                label="Digite sua nova senha"
                 secureTextEntry={true}
-                placeholder="Digite sua nova senha"
                 type="text"
                 onChangeText={(text) => setPassword(text)}
                 onChange={()=> setRegisterError(false)}
                 value={password}
             />
             <TextInput 
-                style={styles.input}
-                secureTextEntry={true}
-                placeholder="Confirme a senha"
+                style={GS.textInput}
+                color={DefaultTheme.color.tertiary}
+                label="Confirme a senha"
                 type="text"
                 onChangeText={(text) => setPasswordConfirm(text)}
                 onChange={()=> setRegisterError(false)}
                 value={passwordConfirm}
             />
             {registerError === true ? 
-                <View style={styles.contentAlert}>
+                <View style={GS.alertContainer}>
                     <MaterialCommunityIcons 
                         name="alert-circle"
                         size={24}
-                        color="#bdbdbd"
+                        color={DefaultTheme.color.gray}
                     />
-                    <Text style={styles.warningAlert}>Erro ao tentar fazer o cadastro.</Text>
+                    <Text style={GS.alertText}>Erro ao tentar fazer o cadastro.</Text>
                 </View>
             :
-                <View></View>
+                <View />
             }
             {passwordCheck === false ?
-                <Text style={styles.warningAlert}>As senhas devem ser iguais.</Text> 
+                <Text style={GS.alertText}>As senhas devem ser iguais.</Text> 
                 :
                 <View style={{height:10}}/>
             }
             {name === "" || email === "" || birth === "" || password === "" || passwordConfirm === "" && passwordCheck === true ? 
                 <TouchableOpacity 
                     disabled={true}
-                    style={styles.buttonRegister}
+                    style={GS.button}
                 >
-                    <Text style={styles.textButtonRegister}>Cadastrar</Text>
+                    <Text style={GS.textButton}>Cadastrar</Text>
                 </TouchableOpacity>  
             :
                 <TouchableOpacity 
-                    style={styles.buttonRegister}
+                    style={GS.button}
                     onPress={() => resgisterWithEmail( name, email, birth, password )}
                 >
-                    <Text style={styles.textButtonRegister}>Cadastrar</Text>
+                    <Text style={GS.textButton}>Cadastrar</Text>
                 </TouchableOpacity>              
-            }
+            }  
             <View style={{height:10}}/>
         </KeyboardAvoidingView>
     )
