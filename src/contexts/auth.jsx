@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)
     }
 
-    async function signInWithEmail( email , password){
+    async function signInWithEmail( email , password ){
         setLoading(true)
 
         await signInWithEmailAndPassword(auth, email, password)
@@ -97,6 +97,23 @@ export const AuthProvider = ({ children }) => {
           });
     }
 
+    async function writeStoreInDB( name, address, email, phone, site, type, desc ){
+        setLoading(true)
+
+        await setDoc(doc(db, "establishments", token.uid), {
+            owner: token.uid,
+            name: name,
+            address: address,
+            email: email,
+            phone: phone,
+            website: site,
+            type: type,
+            description: desc,
+        });
+
+        setLoading(false)
+    }
+
     async function handleUserData(response){
         const docRef = doc(db, "users", response.uid);
         const docSnap = await getDoc(docRef);
@@ -113,11 +130,13 @@ export const AuthProvider = ({ children }) => {
         <AuthContext.Provider 
             value={{ 
                     signed: !!user, 
-                    user, 
+                    user,
+                    token, 
                     signInWithEmail, 
                     resgisterWithEmail, 
                     firebaseSignOut,
                     writeUserInDB,
+                    writeStoreInDB,
                     handleUserData, 
                     loading, 
                     errorText,

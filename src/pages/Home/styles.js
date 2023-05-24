@@ -20,11 +20,11 @@ const styles = StyleSheet.create({
     },
     hstack: {
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'space-evenly',
     },
     buttonContainer :{
-        width: 80,
-        height: 80,
+        width: 70,
+        height: 70,
         borderRadius: 5,
         backgroundColor: DefaultTheme.color.tertiary,
     },

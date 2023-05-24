@@ -29,13 +29,11 @@ export const GS = StyleSheet.create({
         color: DefaultTheme.color.white
     },
     textInput:{
-        width: 350,
+        width: 320,
         height: 50,
         marginTop: 10,
         marginBottom: 10,
         padding: 10,
-        marginLeft:"auto",
-        marginRight:"auto",
     },
     button:{
         width: 280,
@@ -60,6 +58,27 @@ export const GS = StyleSheet.create({
         paddingLeft: 10,
         color: DefaultTheme.color.gray,
         fontSize: DefaultTheme.fontSize.text,
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        width: '95%',
+        padding: 25,
+        alignItems: 'center',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
     },
 
 })

@@ -44,24 +44,24 @@ const Home = ({ navigation }) => {
         />
         <View>
             <Text style={GS.titleMicro} > Atalhos </Text>
-                <HStack divider={true} spacing={10} style={styles.hstack} >
+                <HStack style={styles.hstack} >
                     <IconButton 
-                        icon={props => <Icon name="store-plus-outline" {...props} style={styles.buttonIcon} size={70}/>} 
+                        icon={props => <Icon name="store-plus-outline" {...props} style={styles.buttonIcon} size={50} />} 
                         onPress={() => navigation.navigate("StoreRegister")} 
                         style={styles.buttonContainer} 
                     />
                     <IconButton 
-                        icon={props => <Icon name="cog-outline" {...props} style={styles.buttonIcon} size={70}/>} 
+                        icon={props => <Icon name="cog-outline" {...props} style={styles.buttonIcon} size={50} />} 
                         onPress={() => navigation.navigate("Config")} 
                         style={styles.buttonContainer} 
                     />
                     <IconButton 
-                        icon={props => <Icon name="map" {...props} style={styles.buttonIcon} size={70}/>} 
+                        icon={props => <Icon name="map" {...props} style={styles.buttonIcon} size={50} />} 
                         onPress={() => navigation.navigate("Map")} 
                         style={styles.buttonContainer} 
                     />
                     <IconButton 
-                        icon={props => <Icon name="account-edit" {...props} style={styles.buttonIcon} size={70}/>} 
+                        icon={props => <Icon name="account-edit" {...props} style={styles.buttonIcon} size={50} />} 
                         onPress={() => navigation.navigate("UserProfile")} 
                         style={styles.buttonContainer} 
                     />
