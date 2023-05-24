@@ -7,7 +7,7 @@ export const GS = StyleSheet.create({
         backgroundColor: DefaultTheme.color.primary ,
         justifyContent: 'center', 
         alignItems:'center',
-        paddingTop: Platform.OS === 'ios' ? 0 : 50,
+        paddingTop: Platform.OS === 'ios' ? 0 : 10,
     },
     titleBig:{
         fontSize: DefaultTheme.fontSize.titleBig,
@@ -17,6 +17,13 @@ export const GS = StyleSheet.create({
     },
     titleSmall:{
         fontSize: DefaultTheme.fontSize.titleSmall,
+        marginBottom: 10,
+        fontWeight: "bold",
+        color: DefaultTheme.color.white
+    },
+    titleMicro:{
+        fontSize: DefaultTheme.fontSize.titleMicro,
+        marginTop: 50,
         marginBottom: 10,
         fontWeight: "bold",
         color: DefaultTheme.color.white

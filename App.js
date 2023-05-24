@@ -1,4 +1,3 @@
-//Gesture Handler
 import 'react-native-gesture-handler'
 
 //React

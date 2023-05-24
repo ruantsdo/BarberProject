@@ -13,6 +13,7 @@ export const DefaultTheme = {
     fontSize:{
         titleBig: 48,
         titleSmall: 32,
+        titleMicro: 22,
         text: 16,
     },
 }

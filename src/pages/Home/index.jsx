@@ -1,14 +1,19 @@
 //React 
 import React, { useContext, useEffect } from "react";
-import { View, Button, Text } from "react-native";
+import { View, Text } from "react-native";
 
 //Contexts
 import AuthContext from "../../contexts/auth";
 
-//Firebase
+//Styles
+import styles from "./styles"
+import { DefaultTheme } from "../../themes/colors&sizes.theme";
+import { GS } from "../../styles/global.styles";
 
+import { AppBar, HStack, IconButton, Button } from "@react-native-material/core";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-const Home = () => {
+const Home = ({ navigation }) => {
     const {firebaseSignOut, user, setErrorText } = useContext(AuthContext)
 
     useEffect(()=>{
@@ -16,11 +21,56 @@ const Home = () => {
     },[])
 
     return(
-        <View style={{flex:1, justifyContent: 'center', alignItems:'center'}}>
-            <Text>Logado como: {user?.name}</Text>
-            <Text>Email: {user?.email}</Text>
-            <Button title="Sair" onPress={() => firebaseSignOut()} />
+    <View style={styles.container}>
+        <AppBar
+        title={"Olá, " + user.name}
+        style={styles.header}
+        leading={props => (
+            <IconButton 
+                onPress={() => navigation.navigate("UserProfile")} 
+                style={styles.profilePhoto} 
+                icon={props => <Icon name="image" {...props} />} {...props} 
+            />
+        )}
+        trailing={props => (
+            <HStack>
+            <IconButton
+                onPress={() => navigation.navigate("Config")}
+                icon={props => <Icon name="cog-outline" {...props} />}
+                {...props}
+            />
+            </HStack>
+        )}
+        />
+        <View>
+            <Text style={GS.titleMicro} > Atalhos </Text>
+                <HStack divider={true} spacing={10} style={styles.hstack} >
+                    <IconButton 
+                        icon={props => <Icon name="store-plus-outline" {...props} style={styles.buttonIcon} size={70}/>} 
+                        onPress={() => navigation.navigate("StoreRegister")} 
+                        style={styles.buttonContainer} 
+                    />
+                    <IconButton 
+                        icon={props => <Icon name="cog-outline" {...props} style={styles.buttonIcon} size={70}/>} 
+                        onPress={() => navigation.navigate("Config")} 
+                        style={styles.buttonContainer} 
+                    />
+                    <IconButton 
+                        icon={props => <Icon name="map" {...props} style={styles.buttonIcon} size={70}/>} 
+                        onPress={() => navigation.navigate("Map")} 
+                        style={styles.buttonContainer} 
+                    />
+                    <IconButton 
+                        icon={props => <Icon name="account-edit" {...props} style={styles.buttonIcon} size={70}/>} 
+                        onPress={() => navigation.navigate("UserProfile")} 
+                        style={styles.buttonContainer} 
+                    />
+                </HStack>
         </View>
+        <View style={styles.body}>
+            <Text style={GS.titleMicro} > Nas Proximidades </Text>
+        </View>
+    </View>
     )
 }
 

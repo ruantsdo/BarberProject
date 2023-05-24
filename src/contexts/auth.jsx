@@ -52,8 +52,6 @@ export const AuthProvider = ({ children }) => {
             const errorCode = error.code;
             const errorMessage = error.message;
         });
-
-        setLoading(false)
     }
 
     async function resgisterWithEmail( name, email, birth, password){
