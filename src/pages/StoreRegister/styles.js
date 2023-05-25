@@ -12,7 +12,16 @@ const styles = StyleSheet.create({
 
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
+    title:{
+        width: '90%',
+        textAlign: 'center',
+        fontSize: DefaultTheme.fontSize.titleMicro,
+        marginTop: 15,
+        marginBottom: 15,
+        fontWeight: "bold",
+        color: DefaultTheme.color.white
+    },
 })
 
 export default styles

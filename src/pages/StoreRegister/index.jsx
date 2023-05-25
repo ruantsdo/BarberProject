@@ -1,6 +1,6 @@
 //React 
 import React, { useContext, useState } from "react";
-import { View, Button, Text, KeyboardAvoidingView, Modal, TouchableOpacity } from "react-native";
+import { View, Button, Text, KeyboardAvoidingView, Modal, TouchableOpacity, ScrollView, Keyboard, TouchableWithoutFeedback } from "react-native";
 
 //Styles
 import styles from "./styles"
@@ -8,13 +8,15 @@ import { DefaultTheme } from "../../themes/colors&sizes.theme";
 import { GS } from "../../styles/global.styles";
 import { TextInput } from "@react-native-material/core";
 
-
 //Contexts
 import AuthContext from "../../contexts/auth";
 
+//Icons
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+
 
 const StoreRegister = ({ navigation }) => {
-    const { token, writeStoreInDB } = useContext(AuthContext)
+    const { writeStoreInDB } = useContext(AuthContext)
 
     const [name, setName] = useState("")
     const [address, setAddress] = useState("")
@@ -25,24 +27,32 @@ const StoreRegister = ({ navigation }) => {
     const [desc, setDesc] = useState("")
 
     const [show, setShow] = useState(false)
+    const [warningMenssage, setWarningMenssage] = useState(false)
+
 
     return(
-        <KeyboardAvoidingView style={GS.container}>
-            <Text style={GS.titleMicro}>Insira os dados do seu estabelecimento</Text>
+        <ScrollView>
+        <KeyboardAvoidingView 
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={GS.container}
+        >
+        <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss ; setShow(!show)}}>
+        <>
+            <Text style={styles.title}>Insira os dados do seu estabelecimento</Text>
             <TextInput 
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}
-                label="Nome do estabelecimento"
+                label="Nome do estabelecimento*"
                 type="text"
-                onChangeText={(text) => setName(text)}
+                onChangeText={(text) => { setName(text) ; setWarningMenssage(false)}}
                 value={name}
             />
             <TextInput 
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}
-                label="Endereço"
+                label="Endereço*"
                 type="text"
-                onChangeText={(text) => setAddress(text)}
+                onChangeText={(text) => { setAddress(text) ; setWarningMenssage(false)}}
                 value={address}
             />
             <TextInput 
@@ -56,9 +66,9 @@ const StoreRegister = ({ navigation }) => {
             <TextInput 
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}
-                label="Telefone"
-                type="text"
-                onChangeText={(text) => setPhone(text)}
+                label="Telefone*"
+                keyboardType="numeric"
+                onChangeText={(text) => {setPhone(text) ; setWarningMenssage(false)}}
                 value={phone}
             />
             <TextInput 
@@ -73,8 +83,8 @@ const StoreRegister = ({ navigation }) => {
                 showSoftInputOnFocus={false}
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}
-                label="Tipo do estabelecimento"
-                onPressIn={() => setShow(!show)}
+                label="Tipo do estabelecimento*"
+                onPressIn={() => {setShow(!show) ; setWarningMenssage(false)}}
                 value={type}
             />
             <Modal
@@ -104,7 +114,7 @@ const StoreRegister = ({ navigation }) => {
                         </TouchableOpacity>
                         
                         <TouchableOpacity onPress={() => setShow(!show)} style={{marginTop: 15}}>
-                            <Text>Voltar</Text>
+                            <Text>Fechar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -117,13 +127,37 @@ const StoreRegister = ({ navigation }) => {
                 onChangeText={(text) => setDesc(text)}
                 value={desc}
             />
-            <TouchableOpacity 
-                title="Cadastrar" 
-                style={GS.button} 
-                onPress={() => writeStoreInDB( name, address, email, phone, site, type, desc)} >
-                    <Text style={GS.textButton}>Cadastrar</Text>
-            </TouchableOpacity>
+            {warningMenssage == true ? 
+            <View style={GS.alertContainer}>
+                <MaterialCommunityIcons 
+                    name="alert-circle"
+                    size={24}
+                    color={DefaultTheme.color.gray}
+                />
+                <Text style={GS.alertText}>Todos os campos com "*" são obrigatórios</Text>
+            </View>
+            :
+            <View />
+            }
+            {name === "" || address === "" || phone === "" || type === "" ?
+                <TouchableOpacity 
+                    title="Cadastrar" 
+                    style={GS.button} 
+                    onPress={() => setWarningMenssage(true)} >
+                        <Text style={GS.textButton}>Cadastrar</Text>
+                </TouchableOpacity>
+            :
+                <TouchableOpacity 
+                    title="Cadastrar" 
+                    style={GS.button} 
+                    onPress={() => writeStoreInDB( name, address, email, phone, site, type, desc)} >
+                        <Text style={GS.textButton}>Cadastrar</Text>
+                </TouchableOpacity>
+            }
+        </>
+        </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
+        </ScrollView>
     )
 }
 

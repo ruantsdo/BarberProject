@@ -17,7 +17,7 @@ const AppStack = createNativeStackNavigator()
 const AppRoutes = () =>(
     <AppStack.Navigator initialRouteName="Home" >
         <AppStack.Screen name="Home" component={Home} options={{headerShown: false}} />
-        <AppStack.Screen name="StoreRegister" component={StoreRegister} options={{title: "Cadastro de estabelecimento"}} />
+        <AppStack.Screen name="StoreRegister" component={StoreRegister} options={{title: "Novo estabelecimento"}} headerTransparent/>
         <AppStack.Screen name="Config" component={Config} options={{title: "Configurações"}} />
         <AppStack.Screen name="Map" component={Maps} options={{title: "Mapa"}} />
         <AppStack.Screen name="AutenticadedPasswordChange" component={AutenticadedPasswordChange} options={{headerShown: false}} />

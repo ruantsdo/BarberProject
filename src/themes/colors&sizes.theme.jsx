@@ -9,6 +9,7 @@ export const DefaultTheme = {
         primaryContrast: '#5F605E',
         link: '#1877f2',
         gray: '#bdbdbd',
+        alert: '#ff0301'
     },
     fontSize:{
         titleBig: 48,

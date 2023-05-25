@@ -30,8 +30,8 @@ const SignIn = ({ navigation }) => {
 
     return(
         <KeyboardAvoidingView 
-            style={GS.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={GS.container}
         >
             <View style={styles.imgContainer}>
                 <Image 

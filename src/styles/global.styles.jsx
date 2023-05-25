@@ -23,13 +23,13 @@ export const GS = StyleSheet.create({
     },
     titleMicro:{
         fontSize: DefaultTheme.fontSize.titleMicro,
-        marginTop: 50,
-        marginBottom: 10,
+        marginTop: 15,
+        marginBottom: 15,
         fontWeight: "bold",
         color: DefaultTheme.color.white
     },
     textInput:{
-        width: 320,
+        width: '90%',
         height: 50,
         marginTop: 10,
         marginBottom: 10,
@@ -43,6 +43,7 @@ export const GS = StyleSheet.create({
         backgroundColor: DefaultTheme.color.positive,
         borderRadius: 10,
         marginTop: 30,
+        marginBottom: 20,
     },
     textButton:{
         fontSize: DefaultTheme.fontSize.text,
@@ -56,7 +57,7 @@ export const GS = StyleSheet.create({
     },
     alertText:{
         paddingLeft: 10,
-        color: DefaultTheme.color.gray,
+        color: DefaultTheme.color.alert,
         fontSize: DefaultTheme.fontSize.text,
     },
     modalContainer: {
