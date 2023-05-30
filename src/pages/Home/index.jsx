@@ -69,6 +69,7 @@ const Home = ({ navigation }) => {
         </View>
         <View style={styles.body}>
             <Text style={GS.titleMicro} > Nas Proximidades </Text>
+            <Button onPress={firebaseSignOut} variant="contained" title="Sair" />
         </View>
     </View>
     )

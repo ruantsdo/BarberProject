@@ -1,6 +1,6 @@
 //React
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
+import { Modal, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, ScrollView } from "react-native";
 
 //Styles
 import styles from "./styles"
@@ -17,34 +17,42 @@ import AuthContext from "../../contexts/auth"
 // Date Picker
 import DatePicker from "react-native-modern-datepicker";
 
+
 const UserRegister = () => {
-    const { resgisterWithEmail, registerError, setRegisterError, setLoginError, setErrorText } = useContext(AuthContext)
+    const { resgisterWithEmail, registerError, setRegisterError, setLoginError,  Keyboard, setErrorText } = useContext(AuthContext)
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const [name, setName] = useState("")
     const [birth, setBirth] = useState("")
-    const [passwordCheck, setPasswordCheck] = useState(true)
+    const [warning, setWarning] = useState(<View style={{height:10}} />)
 
     const [openCalendar, setOpenCalendar] = useState(false)
+
+    
 
     useEffect(()=>{
         setErrorText("")
         setLoginError(false)
     }, [])
 
-    useEffect(()=>{
-        if(password ==! passwordConfirm){
-            setPasswordCheck(!passwordCheck)
+    function checkPassword() {
+        if(password === passwordConfirm){
+            setWarning(<Text style={GS.alertText}>As senhas devem ser iguais.</Text>)
+        } else {
+            setWarning(<View style={{height:10}}/>)
         }
-    },[password, passwordConfirm])
+    }
 
     return(
+        <ScrollView contentContainerStyle={GS.ScrollContainer}>
         <KeyboardAvoidingView 
             style={GS.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
+        <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss}}>
+        <>
             <Text style={GS.titleSmall}>Crie sua conta</Text>
             <TextInput 
                 style={GS.textInput}
@@ -53,6 +61,7 @@ const UserRegister = () => {
                 type="text"
                 onChangeText={(text) => setName(text)}
                 value={name}
+                autoCapitalize="words"
             />
             <TextInput 
                 style={GS.textInput}
@@ -62,6 +71,7 @@ const UserRegister = () => {
                 onChangeText={(text) => setEmail(text)}
                 onChange={()=> setRegisterError(false)}
                 value={email}
+                autoCapitalize="none"
             />
             <TextInput 
                 showSoftInputOnFocus={false}
@@ -96,18 +106,21 @@ const UserRegister = () => {
                 label="Digite sua nova senha"
                 secureTextEntry={true}
                 type="text"
-                onChangeText={(text) => setPassword(text)}
+                onChangeText={(text) => {setPassword(text) ; checkPassword()}}
                 onChange={()=> setRegisterError(false)}
                 value={password}
+                autoCapitalize="none"
             />
             <TextInput 
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}
                 label="Confirme a senha"
+                secureTextEntry={true}
                 type="text"
-                onChangeText={(text) => setPasswordConfirm(text)}
+                onChangeText={(text) => {setPasswordConfirm(text) ; checkPassword()}}
                 onChange={()=> setRegisterError(false)}
                 value={passwordConfirm}
+                autoCapitalize="none"
             />
             {registerError === true ? 
                 <View style={GS.alertContainer}>
@@ -121,12 +134,8 @@ const UserRegister = () => {
             :
                 <View />
             }
-            {passwordCheck === false ?
-                <Text style={GS.alertText}>As senhas devem ser iguais.</Text> 
-                :
-                <View style={{height:10}}/>
-            }
-            {name === "" || email === "" || birth === "" || password === "" || passwordConfirm === "" && passwordCheck === true ? 
+            {warning}
+            {name === "" || email === "" || birth === "" || password === "" || passwordConfirm === "" && password === passwordConfirm ? 
                 <TouchableOpacity 
                     disabled={true}
                     style={GS.button}
@@ -142,7 +151,10 @@ const UserRegister = () => {
                 </TouchableOpacity>              
             }  
             <View style={{height:10}}/>
+        </>
+        </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
+        </ScrollView>
     )
 }
 

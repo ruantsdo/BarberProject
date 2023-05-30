@@ -2,7 +2,7 @@ export const DefaultTheme = {
     color: {
         primary: '#171717',
         secondary: '#3D348B',
-        tertiary: '#38566C',
+        tertiary: '#0a6194',
         gold: '#DAA520',
         white: '#ffffff',
         positive: '#68A015',

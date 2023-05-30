@@ -1,6 +1,6 @@
 //React 
 import React, { useContext, useState } from "react";
-import { View, Button, Text, KeyboardAvoidingView, Modal, TouchableOpacity, ScrollView, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { View, Text, KeyboardAvoidingView, Modal, TouchableOpacity, ScrollView, Keyboard, TouchableWithoutFeedback } from "react-native";
 
 //Styles
 import styles from "./styles"
@@ -15,7 +15,7 @@ import AuthContext from "../../contexts/auth";
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
 
-const StoreRegister = ({ navigation }) => {
+const StoreRegister = ({ }) => {
     const { writeStoreInDB } = useContext(AuthContext)
 
     const [name, setName] = useState("")
@@ -31,7 +31,7 @@ const StoreRegister = ({ navigation }) => {
 
 
     return(
-        <ScrollView>
+        <ScrollView contentContainerStyle={GS.ScrollContainer} > 
         <KeyboardAvoidingView 
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={GS.container}
@@ -62,6 +62,7 @@ const StoreRegister = ({ navigation }) => {
                 type="text"
                 onChangeText={(text) => setEmail(text)}
                 value={email}
+                autoCapitalize="none"
             />
             <TextInput 
                 style={GS.textInput}
@@ -78,6 +79,7 @@ const StoreRegister = ({ navigation }) => {
                 type="text"
                 onChangeText={(text) => setSite(text)}
                 value={site}
+                autoCapitalize="none"
             />
             <TextInput 
                 showSoftInputOnFocus={false}

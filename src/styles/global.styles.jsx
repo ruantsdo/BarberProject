@@ -2,6 +2,10 @@ import { Platform, StyleSheet } from "react-native"
 import { DefaultTheme } from "../themes/colors&sizes.theme";
 
 export const GS = StyleSheet.create({
+    ScrollContainer:{
+        flex: 1, 
+        backgroundColor: DefaultTheme.color.primary ,
+    },
     container:{
         flex:1, 
         backgroundColor: DefaultTheme.color.primary ,
@@ -56,6 +60,7 @@ export const GS = StyleSheet.create({
         alignItems: "center",
     },
     alertText:{
+        marginTop: 10,
         paddingLeft: 10,
         color: DefaultTheme.color.alert,
         fontSize: DefaultTheme.fontSize.text,

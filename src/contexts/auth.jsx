@@ -51,6 +51,7 @@ export const AuthProvider = ({ children }) => {
             setErrorText("Usuário ou senha inválidos")
             const errorCode = error.code;
             const errorMessage = error.message;
+            setLoading(false)
         });
     }
 
@@ -68,6 +69,7 @@ export const AuthProvider = ({ children }) => {
             setErrorText("Falha ao realizar cadastro")
             const errorCode = error.code;
             const errorMessage = error.message;
+            setLoading(false)
         });
 
         setLoading(false)
@@ -84,6 +86,7 @@ export const AuthProvider = ({ children }) => {
           }).catch((error) => {
             setSignOutError(true)
             setErrorText("Erro ao fazer logout")
+            setLoading(false)
           });
 
         setLoading(false)
@@ -123,6 +126,7 @@ export const AuthProvider = ({ children }) => {
             loadStoragedData()
         } else {
             setErrorText("Erro ao carregar os seus dados");
+            setLoading(false)
         }
     }
 

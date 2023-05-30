@@ -49,6 +49,7 @@ const SignIn = ({ navigation }) => {
                 onChangeText={(text) => setEmail(text)}
                 onChange={()=> setLoginError(false)}
                 value={email}
+                autoCapitalize="none"
             />
             <TextInput 
                 style={GS.textInput}
@@ -59,6 +60,7 @@ const SignIn = ({ navigation }) => {
                 onChangeText={(text) => setPassword(text)}
                 onChange={()=> setLoginError(false)}
                 value={password}
+                autoCapitalize="none"
             />
             {loginError === true ? 
             <View style={GS.alertContainer}>
