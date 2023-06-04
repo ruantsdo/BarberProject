@@ -14,7 +14,6 @@ import AuthContext from "../../contexts/auth";
 //Icons
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
-
 const StoreRegister = ({ }) => {
     const { writeStoreInDB } = useContext(AuthContext)
 

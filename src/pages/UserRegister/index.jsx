@@ -1,10 +1,12 @@
 //React
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, ScrollView } from "react-native";
+import { Modal, View, Text, TouchableOpacity, KeyboardAvoidingView, 
+        Platform, TouchableWithoutFeedback, ScrollView, Button, Image } from "react-native";
 
 //Styles
 import styles from "./styles"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { MaterialIcons } from '@expo/vector-icons';
 import { DefaultTheme } from "../../themes/colors&sizes.theme";
 import { GS } from '../../styles/global.styles'
 
@@ -17,25 +19,48 @@ import AuthContext from "../../contexts/auth"
 // Date Picker
 import DatePicker from "react-native-modern-datepicker";
 
+// Image Picker
+import * as ImagePicker from 'expo-image-picker';
+
 
 const UserRegister = () => {
-    const { resgisterWithEmail, registerError, setRegisterError, setLoginError,  Keyboard, setErrorText } = useContext(AuthContext)
+    const { resgisterWithEmail, registerError, setRegisterError, setLoginError, setErrorText, handlePhoto } = useContext(AuthContext)
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const [name, setName] = useState("")
     const [birth, setBirth] = useState("")
-    const [warning, setWarning] = useState(<View style={{height:10}} />)
 
+    const [base64Image, setBase64Image] = useState(null);
+    const [image, setImage] = useState(null);
+
+
+    const [warning, setWarning] = useState(<View style={{height:10}} />)
     const [openCalendar, setOpenCalendar] = useState(false)
 
-    
 
     useEffect(()=>{
         setErrorText("")
         setLoginError(false)
     }, [])
+
+    
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        if (!result.canceled) {
+          setImage(result.assets[0].uri);
+          handlePhoto(image)
+        }
+
+      };
+
 
     function checkPassword() {
         if(password === passwordConfirm){
@@ -54,6 +79,14 @@ const UserRegister = () => {
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss}}>
         <>
             <Text style={GS.titleSmall}>Crie sua conta</Text>
+            <TouchableOpacity onPress={pickImage} >
+                    <MaterialIcons 
+                        name="add-a-photo"
+                        size={64}
+                        color={DefaultTheme.color.gray}
+                    />
+                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+            </TouchableOpacity>
             <TextInput 
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}

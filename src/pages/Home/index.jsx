@@ -1,6 +1,6 @@
 //React 
 import React, { useContext, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 
 //Contexts
 import AuthContext from "../../contexts/auth";

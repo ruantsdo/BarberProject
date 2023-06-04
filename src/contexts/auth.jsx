@@ -6,8 +6,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Firebase
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth, db } from '../services/firebase'
+import { auth, db, storage } from '../services/firebase'
 import { doc, setDoc, getDoc } from "firebase/firestore"
+import { ref, uploadBytes } from "firebase/storage";
 
 //Contexts Calls
 const AuthContext = createContext({ signed: true })
@@ -25,6 +26,14 @@ export const AuthProvider = ({ children }) => {
         setErrorText("")
         loadStoragedData()
     }, [])
+
+    function handlePhoto(reference){
+        const imgRef = ref(storage, reference);
+
+        uploadBytes(imgRef, file).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+          }); 
+    }
 
     async function loadStoragedData(){
         const storagedToken = await AsyncStorage.getItem('@APPAuth:token')
@@ -92,7 +101,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)
     }
 
-    async function writeUserInDB(response, name, email, birth ){
+    async function writeUserInDB(response, name, email, birth, base64Image ){
         await setDoc(doc(db, "users", response.uid), {
             name: name,
             email: email,
@@ -151,6 +160,7 @@ export const AuthProvider = ({ children }) => {
                     setRegisterError, 
                     signOutError,
                     setSignOutError,
+                    handlePhoto,
                 }}>
             {children}
         </AuthContext.Provider>
