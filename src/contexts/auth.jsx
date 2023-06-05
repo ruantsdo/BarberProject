@@ -6,9 +6,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Firebase
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth, db, storage } from '../services/firebase'
+import { auth, db } from '../services/firebase'
 import { doc, setDoc, getDoc } from "firebase/firestore"
-import { ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { decode } from 'base-64';
 
 //Contexts Calls
 const AuthContext = createContext({ signed: true })
@@ -21,19 +22,30 @@ export const AuthProvider = ({ children }) => {
     const [registerError, setRegisterError] = useState(false)
     const [signOutError, setSignOutError] = useState(false)
     const [errorText, setErrorText] = useState("")
+    const [imageUrl, setImageUrl] = useState(null);
 
     useEffect(()=>{
         setErrorText("")
         loadStoragedData()
     }, [])
 
-    function handlePhoto(reference){
-        const imgRef = ref(storage, reference);
-
-        uploadBytes(imgRef, file).then((snapshot) => {
-            console.log('Uploaded a blob or file!');
-          }); 
-    }
+    async function handlePhoto(base64) {
+        const storageRef = ref(getStorage(), 'images');
+        const imageName = new Date().getTime().toString();
+        const imageRef = ref(storageRef, `${imageName}.jpg`);
+        const imageBytes = decode(base64);
+      
+        try {
+          await uploadBytes(imageRef, imageBytes);
+          const downloadURL = await getDownloadURL(imageRef);
+          console.log('Referência do arquivo:', downloadURL);
+      
+          setImageUrl(downloadURL);
+        } catch (error) {
+          console.log('Erro ao enviar a imagem: ', error);
+        }
+      }
+      
 
     async function loadStoragedData(){
         const storagedToken = await AsyncStorage.getItem('@APPAuth:token')
@@ -161,6 +173,7 @@ export const AuthProvider = ({ children }) => {
                     signOutError,
                     setSignOutError,
                     handlePhoto,
+                    imageUrl,
                 }}>
             {children}
         </AuthContext.Provider>

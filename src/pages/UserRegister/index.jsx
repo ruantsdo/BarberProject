@@ -24,17 +24,13 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 const UserRegister = () => {
-    const { resgisterWithEmail, registerError, setRegisterError, setLoginError, setErrorText, handlePhoto } = useContext(AuthContext)
+    const { resgisterWithEmail, registerError, setRegisterError, setLoginError, setErrorText, handlePhoto, imageUrl } = useContext(AuthContext)
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const [name, setName] = useState("")
     const [birth, setBirth] = useState("")
-
-    const [base64Image, setBase64Image] = useState(null);
-    const [image, setImage] = useState(null);
-
 
     const [warning, setWarning] = useState(<View style={{height:10}} />)
     const [openCalendar, setOpenCalendar] = useState(false)
@@ -49,14 +45,14 @@ const UserRegister = () => {
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
+          base64: true,
           allowsEditing: true,
           aspect: [4, 3],
-          quality: 1,
+          quality: 0.8,
         });
     
         if (!result.canceled) {
-          setImage(result.assets[0].uri);
-          handlePhoto(image)
+          handlePhoto(result.base64)
         }
 
       };
@@ -85,7 +81,7 @@ const UserRegister = () => {
                         size={64}
                         color={DefaultTheme.color.gray}
                     />
-                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                {imageUrl && <Image source={{ uri: imageUrl }} style={{ width: 200, height: 200 }} />}
             </TouchableOpacity>
             <TextInput 
                 style={GS.textInput}
