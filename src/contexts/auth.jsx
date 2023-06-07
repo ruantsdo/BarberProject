@@ -8,8 +8,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth, db } from '../services/firebase'
 import { doc, setDoc, getDoc } from "firebase/firestore"
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { decode } from 'base-64';
+
+import * as ImagePicker from 'expo-image-picker';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 //Contexts Calls
 const AuthContext = createContext({ signed: true })
@@ -22,31 +23,48 @@ export const AuthProvider = ({ children }) => {
     const [registerError, setRegisterError] = useState(false)
     const [signOutError, setSignOutError] = useState(false)
     const [errorText, setErrorText] = useState("")
-    const [imageUrl, setImageUrl] = useState(null);
+
+    const [imageUrl, setImageUrl] = useState(null)
+    const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(()=>{
         setErrorText("")
         loadStoragedData()
     }, [])
 
-    async function handlePhoto(base64) {
-        const storageRef = ref(getStorage(), 'images');
-        const imageName = new Date().getTime().toString();
-        const imageRef = ref(storageRef, `${imageName}.jpg`);
-        const imageBytes = decode(base64);
-      
-        try {
-          await uploadBytes(imageRef, imageBytes);
-          const downloadURL = await getDownloadURL(imageRef);
-          console.log('Referência do arquivo:', downloadURL);
-      
-          setImageUrl(downloadURL);
-        } catch (error) {
-          console.log('Erro ao enviar a imagem: ', error);
+    async function pickImage() {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          // Permissão de acesso à galeria negada
+          return;
         }
-      }
       
+        const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          quality: 1,
+        });
+      
+        if (!result.canceled) {
+            setSelectedImage(result.assets[0].uri);
+        }
+    }
+    
+    async function uploadImage(uri) {
+    const storage = getStorage();
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const filename = 'image.jpg'; // Nome do arquivo no Firebase Storage
+    
+    const storageRef = ref(storage, `images/${filename}`);
+    await uploadBytes(storageRef, blob);
 
+    const downloadURL = await getDownloadURL(storageRef);
+    setImageUrl(downloadURL.toString())
+    
+    console.log('Imagem enviada com sucesso!');
+    }
+      
     async function loadStoragedData(){
         const storagedToken = await AsyncStorage.getItem('@APPAuth:token')
         const storagedUser = await AsyncStorage.getItem('@APPAuth:user')
@@ -83,7 +101,8 @@ export const AuthProvider = ({ children }) => {
         .then((userCredential) => {
             const response = userCredential.user;
             AsyncStorage.setItem('@APPAuth:token', JSON.stringify(response))
-            writeUserInDB(response, name, email, birth )
+            uploadImage(selectedImage)
+            writeUserInDB(response, name, email, birth, imageUrl)
             handleUserData(response)
         }).catch((error) => {
             setRegisterError(true)
@@ -113,11 +132,12 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)
     }
 
-    async function writeUserInDB(response, name, email, birth, base64Image ){
+    async function writeUserInDB(response, name, email, birth, photoUrl ){
         await setDoc(doc(db, "users", response.uid), {
             name: name,
             email: email,
             birth: birth,
+            photoUrl: photoUrl,
           });
     }
 
@@ -172,8 +192,10 @@ export const AuthProvider = ({ children }) => {
                     setRegisterError, 
                     signOutError,
                     setSignOutError,
-                    handlePhoto,
+                    pickImage,
                     imageUrl,
+                    selectedImage,
+                    setSelectedImage,
                 }}>
             {children}
         </AuthContext.Provider>
@@ -181,3 +203,5 @@ export const AuthProvider = ({ children }) => {
 }
 
 export default AuthContext
+
+//cor fabio: #057698

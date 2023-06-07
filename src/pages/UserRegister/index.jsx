@@ -24,7 +24,8 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 const UserRegister = () => {
-    const { resgisterWithEmail, registerError, setRegisterError, setLoginError, setErrorText, handlePhoto, imageUrl } = useContext(AuthContext)
+    const { resgisterWithEmail, registerError, setRegisterError, setLoginError, 
+        setErrorText, pickImage, selectedImage } = useContext(AuthContext)
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -41,23 +42,6 @@ const UserRegister = () => {
         setLoginError(false)
     }, [])
 
-    
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          base64: true,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 0.8,
-        });
-    
-        if (!result.canceled) {
-          handlePhoto(result.base64)
-        }
-
-      };
-
-
     function checkPassword() {
         if(password === passwordConfirm){
             setWarning(<Text style={GS.alertText}>As senhas devem ser iguais.</Text>)
@@ -66,6 +50,8 @@ const UserRegister = () => {
         }
     }
 
+    
+    //{imageUrl && <Image source={{ uri: imageUrl }} style={{ width: 200, height: 200 }} />}
     return(
         <ScrollView contentContainerStyle={GS.ScrollContainer}>
         <KeyboardAvoidingView 
@@ -75,14 +61,19 @@ const UserRegister = () => {
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss}}>
         <>
             <Text style={GS.titleSmall}>Crie sua conta</Text>
-            <TouchableOpacity onPress={pickImage} >
-                    <MaterialIcons 
-                        name="add-a-photo"
-                        size={64}
-                        color={DefaultTheme.color.gray}
-                    />
-                {imageUrl && <Image source={{ uri: imageUrl }} style={{ width: 200, height: 200 }} />}
-            </TouchableOpacity>
+            {selectedImage ? (
+                // Renderiza a imagem selecionada se ela estiver disponível
+                <Image source={{ uri: selectedImage }} style={{ width: 100, height: 100 }} />
+            ) : (
+                // Renderiza o ícone se nenhuma imagem estiver selecionada
+                <TouchableOpacity onPress={pickImage}>
+                <MaterialIcons 
+                    name="add-a-photo"
+                    size={64}
+                    color={DefaultTheme.color.gray}
+                />
+                </TouchableOpacity>
+            )}
             <TextInput 
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}

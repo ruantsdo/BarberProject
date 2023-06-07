@@ -14,7 +14,7 @@ import { AppBar, HStack, IconButton, Button } from "@react-native-material/core"
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 const Home = ({ navigation }) => {
-    const {firebaseSignOut, user, setErrorText } = useContext(AuthContext)
+    const {firebaseSignOut, user, setErrorText, setSelectedImage } = useContext(AuthContext)
 
     useEffect(()=>{
         setErrorText("")
@@ -42,6 +42,7 @@ const Home = ({ navigation }) => {
             </HStack>
         )}
         />
+        <Image source={{ uri: user.photoUrl }} style={{ width: 100, height: 100 }} />
         <View>
             <Text style={GS.titleMicro} > Atalhos </Text>
                 <HStack style={styles.hstack} >
