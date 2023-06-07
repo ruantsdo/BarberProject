@@ -25,7 +25,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 const UserRegister = () => {
     const { resgisterWithEmail, registerError, setRegisterError, setLoginError, 
-        setErrorText, pickImage, selectedImage } = useContext(AuthContext)
+        setErrorText, pickImage, selectedImage, setSelectedImage, setImageUrl } = useContext(AuthContext)
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -38,8 +38,12 @@ const UserRegister = () => {
 
 
     useEffect(()=>{
-        setErrorText("")
+        setSelectedImage(null)
+        setImageUrl(null)
         setLoginError(false)
+        setErrorText("")
+        
+        console.log("Imagem selecionada: ", selectedImage)
     }, [])
 
     function checkPassword() {
@@ -50,8 +54,6 @@ const UserRegister = () => {
         }
     }
 
-    
-    //{imageUrl && <Image source={{ uri: imageUrl }} style={{ width: 200, height: 200 }} />}
     return(
         <ScrollView contentContainerStyle={GS.ScrollContainer}>
         <KeyboardAvoidingView 

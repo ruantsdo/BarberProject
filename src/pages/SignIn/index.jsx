@@ -18,14 +18,16 @@ import { TextInput } from "@react-native-material/core"
 
 
 const SignIn = ({ navigation }) => {
-    const { signInWithEmail, loginError, setLoginError, setRegisterError, setErrorText } = useContext(AuthContext)
+    const { signInWithEmail, loginError, setLoginError, setRegisterError, setErrorText, setSelectedImage, setImageUrl } = useContext(AuthContext)
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
     useEffect(()=>{
-        setErrorText("")
+        setSelectedImage(null)
+        setImageUrl(null)
         setRegisterError(false)
+        setErrorText("")  
     }, [])
 
     return(

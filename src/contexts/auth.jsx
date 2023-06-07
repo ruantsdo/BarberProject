@@ -28,14 +28,20 @@ export const AuthProvider = ({ children }) => {
     const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(()=>{
+        setSelectedImage(null)
+        setImageUrl(null)
         setErrorText("")
         loadStoragedData()
     }, [])
 
+    useEffect(() => {
+        console.log("Picker Select: ", selectedImage)
+        console.log("URL: ", imageUrl)
+    }, [selectedImage, imageUrl]);
+
     async function pickImage() {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
-          // Permissão de acesso à galeria negada
           return;
         }
       
@@ -46,23 +52,29 @@ export const AuthProvider = ({ children }) => {
         });
       
         if (!result.canceled) {
-            setSelectedImage(result.assets[0].uri);
+            const ImagePath = (result.assets[0].uri).toString()
+            setSelectedImage(ImagePath);
+            //console.log("Picker Select: ", selectedImage)
         }
     }
     
-    async function uploadImage(uri) {
-    const storage = getStorage();
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    const filename = 'image.jpg'; // Nome do arquivo no Firebase Storage
-    
-    const storageRef = ref(storage, `images/${filename}`);
-    await uploadBytes(storageRef, blob);
+    async function uploadImage(token, uri) {
+        const storage = getStorage();
+        const response = await fetch(uri);
+        const blob = await response.blob();
+        const fileExtension = uri.split('.').pop(); // Obter a extensão do arquivo
+        const filename = `${token.uid}.${fileExtension}`; // Nome do arquivo no Firebase Storage
+        console.log("Nome definido: ", filename)
+        
+        const storageRef = ref(storage, `usersProfileImages/${filename}`);
+        await uploadBytes(storageRef, blob);
 
-    const downloadURL = await getDownloadURL(storageRef);
-    setImageUrl(downloadURL.toString())
-    
-    console.log('Imagem enviada com sucesso!');
+        const downloadURL = await getDownloadURL(storageRef);
+        setImageUrl(downloadURL)
+        
+        console.log('Imagem enviada com sucesso!');
+
+        return downloadURL;
     }
       
     async function loadStoragedData(){
@@ -101,9 +113,15 @@ export const AuthProvider = ({ children }) => {
         .then((userCredential) => {
             const response = userCredential.user;
             AsyncStorage.setItem('@APPAuth:token', JSON.stringify(response))
-            uploadImage(selectedImage)
-            writeUserInDB(response, name, email, birth, imageUrl)
-            handleUserData(response)
+            uploadImage(response, selectedImage)
+            .then((imageUrl) => {
+                writeUserInDB(response, name, email, birth, imageUrl);
+                handleUserData(response);
+            })
+            .catch((error) => {
+                // Trate o erro relacionado ao upload da imagem, se necessário.
+                console.log("Erro: ", error)
+            });
         }).catch((error) => {
             setRegisterError(true)
             setErrorText("Falha ao realizar cadastro")
@@ -132,12 +150,12 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)
     }
 
-    async function writeUserInDB(response, name, email, birth, photoUrl ){
+    async function writeUserInDB(response, name, email, birth, imageUrl ){
         await setDoc(doc(db, "users", response.uid), {
             name: name,
             email: email,
             birth: birth,
-            photoUrl: photoUrl,
+            photoUrl: imageUrl,
           });
     }
 
@@ -159,6 +177,9 @@ export const AuthProvider = ({ children }) => {
     }
 
     async function handleUserData(response){
+        setLoading(true)
+        console.log("Chamou HandleData...")
+
         const docRef = doc(db, "users", response.uid);
         const docSnap = await getDoc(docRef);
 
@@ -194,6 +215,7 @@ export const AuthProvider = ({ children }) => {
                     setSignOutError,
                     pickImage,
                     imageUrl,
+                    setImageUrl,
                     selectedImage,
                     setSelectedImage,
                 }}>
