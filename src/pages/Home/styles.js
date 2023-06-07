@@ -15,7 +15,9 @@ const styles = StyleSheet.create({
         color: DefaultTheme.color.white,
     },
     profilePhoto: {
-        backgroundColor: 'red',
+        width: 50,
+        height: 50,
+        backgroundColor: DefaultTheme.color.tertiary,
         borderRadius: 5,
     },
     hstack: {

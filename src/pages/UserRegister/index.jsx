@@ -19,9 +19,6 @@ import AuthContext from "../../contexts/auth"
 // Date Picker
 import DatePicker from "react-native-modern-datepicker";
 
-// Image Picker
-import * as ImagePicker from 'expo-image-picker';
-
 
 const UserRegister = () => {
     const { resgisterWithEmail, registerError, setRegisterError, setLoginError, 
@@ -42,8 +39,6 @@ const UserRegister = () => {
         setImageUrl(null)
         setLoginError(false)
         setErrorText("")
-        
-        console.log("Imagem selecionada: ", selectedImage)
     }, [])
 
     function checkPassword() {
@@ -64,16 +59,16 @@ const UserRegister = () => {
         <>
             <Text style={GS.titleSmall}>Crie sua conta</Text>
             {selectedImage ? (
-                // Renderiza a imagem selecionada se ela estiver disponível
-                <Image source={{ uri: selectedImage }} style={{ width: 100, height: 100 }} />
-            ) : (
-                // Renderiza o ícone se nenhuma imagem estiver selecionada
                 <TouchableOpacity onPress={pickImage}>
-                <MaterialIcons 
-                    name="add-a-photo"
-                    size={64}
-                    color={DefaultTheme.color.gray}
-                />
+                    <Image source={{ uri: selectedImage }} style={styles.image} />
+                </TouchableOpacity>
+            ) : (
+                <TouchableOpacity onPress={pickImage}>
+                    <MaterialIcons 
+                        name="add-a-photo"
+                        size={64}
+                        color={DefaultTheme.color.gray}
+                    />
                 </TouchableOpacity>
             )}
             <TextInput 

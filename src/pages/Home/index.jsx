@@ -7,7 +7,7 @@ import AuthContext from "../../contexts/auth";
 
 //Styles
 import styles from "./styles"
-import { DefaultTheme } from "../../themes/colors&sizes.theme";
+//import { DefaultTheme } from "../../themes/colors&sizes.theme";
 import { GS } from "../../styles/global.styles";
 
 import { AppBar, HStack, IconButton, Button } from "@react-native-material/core";
@@ -18,7 +18,6 @@ const Home = ({ navigation }) => {
 
     useEffect(()=>{
         setErrorText("")
-        console.log("User Photo URL: ", user.photoUrl)
     },[])
 
     return(
@@ -26,13 +25,19 @@ const Home = ({ navigation }) => {
         <AppBar
         title={"Olá, " + user.name}
         style={styles.header}
-        leading={props => (
+        leading={user.photoUrl ? 
             <IconButton 
+                icon={props => <Icon name="mdiAccount" {...props} style={styles.buttonIcon} size={40} />} 
                 onPress={() => navigation.navigate("UserProfile")} 
                 style={styles.profilePhoto} 
-                icon={props => <Icon name="image" {...props} />} {...props} 
             />
-        )}
+            :
+            <Image 
+                source={{ uri: (user.photoUrl) }} 
+                style={styles.profilePhoto} 
+                onPress={() => navigation.navigate("UserProfile")}
+            />
+        }
         trailing={props => (
             <HStack>
             <IconButton
@@ -43,7 +48,6 @@ const Home = ({ navigation }) => {
             </HStack>
         )}
         />
-        <Image source={{ uri: (user.photoUrl) }} style={{ width: 100, height: 100 }} />
         <View>
             <Text style={GS.titleMicro} > Atalhos </Text>
                 <HStack style={styles.hstack} >
@@ -78,13 +82,3 @@ const Home = ({ navigation }) => {
 }
 
 export default Home
-
-/*rules_version = '2';
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if
-          request.time < timestamp.date(2023, 6, 23);
-    }
-  }
-}*/

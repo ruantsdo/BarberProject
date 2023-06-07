@@ -31,6 +31,11 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
+    image: {
+        width: 150,
+        height: 150,
+        borderRadius: 100,
+    }
 })
 
 export default styles

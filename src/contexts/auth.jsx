@@ -8,9 +8,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth, db } from '../services/firebase'
 import { doc, setDoc, getDoc } from "firebase/firestore"
-
-import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+
+//Image Picker
+import * as ImagePicker from 'expo-image-picker';
 
 //Contexts Calls
 const AuthContext = createContext({ signed: true })
@@ -28,15 +29,11 @@ export const AuthProvider = ({ children }) => {
     const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(()=>{
-        setSelectedImage(null)
-        setImageUrl(null)
         setErrorText("")
         loadStoragedData()
     }, [])
 
     useEffect(() => {
-        console.log("Picker Select: ", selectedImage)
-        console.log("URL: ", imageUrl)
     }, [selectedImage, imageUrl]);
 
     async function pickImage() {
@@ -54,17 +51,17 @@ export const AuthProvider = ({ children }) => {
         if (!result.canceled) {
             const ImagePath = (result.assets[0].uri).toString()
             setSelectedImage(ImagePath);
-            //console.log("Picker Select: ", selectedImage)
         }
     }
     
     async function uploadImage(token, uri) {
+        setLoading(true)
+
         const storage = getStorage();
         const response = await fetch(uri);
         const blob = await response.blob();
-        const fileExtension = uri.split('.').pop(); // Obter a extensão do arquivo
-        const filename = `${token.uid}.${fileExtension}`; // Nome do arquivo no Firebase Storage
-        console.log("Nome definido: ", filename)
+        const fileExtension = uri.split('.').pop();
+        const filename = `${token.uid}.${fileExtension}`;
         
         const storageRef = ref(storage, `usersProfileImages/${filename}`);
         await uploadBytes(storageRef, blob);
@@ -72,8 +69,6 @@ export const AuthProvider = ({ children }) => {
         const downloadURL = await getDownloadURL(storageRef);
         setImageUrl(downloadURL)
         
-        console.log('Imagem enviada com sucesso!');
-
         return downloadURL;
     }
       
@@ -84,7 +79,6 @@ export const AuthProvider = ({ children }) => {
         if(storagedToken && storagedUser){
             setToken(JSON.parse(storagedToken))
             setUser(JSON.parse(storagedUser))
-            setLoading(false)
         }
         setLoading(false)
     }
@@ -119,7 +113,6 @@ export const AuthProvider = ({ children }) => {
                 handleUserData(response);
             })
             .catch((error) => {
-                // Trate o erro relacionado ao upload da imagem, se necessário.
                 console.log("Erro: ", error)
             });
         }).catch((error) => {
@@ -129,8 +122,6 @@ export const AuthProvider = ({ children }) => {
             const errorMessage = error.message;
             setLoading(false)
         });
-
-        setLoading(false)
     }
 
     function firebaseSignOut(){
@@ -151,6 +142,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     async function writeUserInDB(response, name, email, birth, imageUrl ){
+        setLoading(true)
         await setDoc(doc(db, "users", response.uid), {
             name: name,
             email: email,
@@ -178,7 +170,6 @@ export const AuthProvider = ({ children }) => {
 
     async function handleUserData(response){
         setLoading(true)
-        console.log("Chamou HandleData...")
 
         const docRef = doc(db, "users", response.uid);
         const docSnap = await getDoc(docRef);
@@ -225,5 +216,3 @@ export const AuthProvider = ({ children }) => {
 }
 
 export default AuthContext
-
-//cor fabio: #057698
