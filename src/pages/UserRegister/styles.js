@@ -34,8 +34,18 @@ const styles = StyleSheet.create({
     image: {
         width: 150,
         height: 150,
-        borderRadius: 100,
-    }
+        borderRadius: 10,
+    },
+    scrollContainer: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 })
 
 export default styles

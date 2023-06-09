@@ -1,6 +1,7 @@
 //React 
 import React, { useContext, useState } from "react";
-import { View, Text, KeyboardAvoidingView, Modal, TouchableOpacity, ScrollView, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { View, Text, KeyboardAvoidingView, Modal, TouchableOpacity, 
+        ScrollView, Keyboard, TouchableWithoutFeedback, Platform } from "react-native";
 
 //Styles
 import styles from "./styles"
@@ -30,13 +31,13 @@ const StoreRegister = ({ }) => {
 
 
     return(
-        <ScrollView contentContainerStyle={GS.ScrollContainer} > 
-        <KeyboardAvoidingView 
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={GS.container}
-        >
-        <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss ; setShow(!show)}}>
-        <>
+    <ScrollView contentContainerStyle={GS.ScrollContainer} >
+    <KeyboardAvoidingView
+    style={GS.container}
+    behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+    <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss ; setShow(false) }}>
+    <>
             <Text style={styles.title}>Insira os dados do seu estabelecimento</Text>
             <TextInput 
                 style={GS.textInput}
@@ -85,7 +86,7 @@ const StoreRegister = ({ }) => {
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}
                 label="Tipo do estabelecimento*"
-                onPressIn={() => {setShow(!show) ; setWarningMenssage(false)}}
+                onPressOut={() => {setShow(true) ; setWarningMenssage(false)}}
                 value={type}
             />
             <Modal
@@ -97,24 +98,24 @@ const StoreRegister = ({ }) => {
                     <View style={GS.modalView}>
                         <TouchableOpacity
                             style={styles.option} 
-                            onPress={() => {setType("Barbearia"); setShow(!show)}}
+                            onPress={() => {setType("Barbearia"); setShow(false)}}
                         >
                             <Text>Barbearia</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.option} 
-                            onPress={() => {setType("Salão"); setShow(!show)}}
+                            onPress={() => {setType("Salão"); setShow(false)}}
                         >
                             <Text>Salão</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.option} 
-                            onPress={() => {setType("Pet Shop"); setShow(!show)}}
+                            onPress={() => {setType("Pet Shop"); setShow(false)}}
                         >
                             <Text>Pet Shop</Text>
                         </TouchableOpacity>
                         
-                        <TouchableOpacity onPress={() => setShow(!show)} style={{marginTop: 15}}>
+                        <TouchableOpacity onPress={() => setShow(false)} style={{marginTop: 15}}>
                             <Text>Fechar</Text>
                         </TouchableOpacity>
                     </View>
@@ -128,7 +129,7 @@ const StoreRegister = ({ }) => {
                 onChangeText={(text) => setDesc(text)}
                 value={desc}
             />
-            {warningMenssage == true ? 
+            {warningMenssage ? 
             <View style={GS.alertContainer}>
                 <MaterialCommunityIcons 
                     name="alert-circle"
@@ -155,10 +156,10 @@ const StoreRegister = ({ }) => {
                         <Text style={GS.textButton}>Cadastrar</Text>
                 </TouchableOpacity>
             }
-        </>
-        </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-        </ScrollView>
+    </>
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+    </ScrollView>
     )
 }
 

@@ -1,6 +1,7 @@
 //React 
 import React, { useContext } from "react";
-import { View, Button, Text } from "react-native";
+import { View, Button, Text, 
+        KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView, Keyboard } from "react-native";
 
 //Styles
 import styles from "./styles"
@@ -14,10 +15,19 @@ const AutenticadedPasswordChange = ({ navigation }) => {
     const {} = useContext(AuthContext)
 
     return(
-        <View>
+        <ScrollView contentContainerStyle={GS.ScrollContainer} >
+        <KeyboardAvoidingView
+        style={GS.container}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <> 
             <Text>Está na página de AutenticadedPasswordChange</Text>
             <Button title="Home" onPress={() => navigation.navigate("Home")} />
-        </View>
+        </>
+        </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+        </ScrollView>
     )
 }
 

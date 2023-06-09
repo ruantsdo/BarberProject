@@ -1,6 +1,7 @@
 //React 
 import React, { useContext, useEffect } from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, 
+        KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView, Keyboard } from "react-native";
 
 //Contexts
 import AuthContext from "../../contexts/auth";
@@ -12,6 +13,7 @@ import { GS } from "../../styles/global.styles";
 
 import { AppBar, HStack, IconButton, Button } from "@react-native-material/core";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import { AntDesign } from '@expo/vector-icons';
 
 const Home = ({ navigation }) => {
     const {firebaseSignOut, user, setErrorText } = useContext(AuthContext)
@@ -21,21 +23,28 @@ const Home = ({ navigation }) => {
     },[])
 
     return(
+    <ScrollView contentContainerStyle={GS.ScrollContainer} >
+    <KeyboardAvoidingView
+        style={GS.container}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
         <AppBar
         title={"Olá, " + user.name}
         style={styles.header}
         leading={user.photoUrl ? 
+            <TouchableWithoutFeedback onPress={() => navigation.navigate("UserProfile")}>
+                <Image 
+                    source={{ uri: (user.photoUrl) }} 
+                    style={styles.profilePhoto} 
+                />
+            </TouchableWithoutFeedback>
+            :
             <IconButton 
-                icon={props => <Icon name="mdiAccount" {...props} style={styles.buttonIcon} size={40} />} 
+                icon={props => <AntDesign name="user" size={32} color="white" />} 
                 onPress={() => navigation.navigate("UserProfile")} 
                 style={styles.profilePhoto} 
-            />
-            :
-            <Image 
-                source={{ uri: (user.photoUrl) }} 
-                style={styles.profilePhoto} 
-                onPress={() => navigation.navigate("UserProfile")}
             />
         }
         trailing={props => (
@@ -75,9 +84,12 @@ const Home = ({ navigation }) => {
         </View>
         <View style={styles.body}>
             <Text style={GS.titleMicro} > Nas Proximidades </Text>
-            <Button onPress={firebaseSignOut} variant="contained" title="Sair" />
+            <Button onPress={firebaseSignOut} style={{width: '60%', alignSelf: 'center'}} variant="contained" title="Sair" />
         </View>
     </View>
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+    </ScrollView>
     )
 }
 

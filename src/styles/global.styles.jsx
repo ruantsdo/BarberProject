@@ -3,15 +3,23 @@ import { DefaultTheme } from "../themes/colors&sizes.theme";
 
 export const GS = StyleSheet.create({
     ScrollContainer:{
-        flex: 1, 
-        backgroundColor: DefaultTheme.color.primary ,
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: DefaultTheme.color.primary,
     },
     container:{
-        flex:1, 
-        backgroundColor: DefaultTheme.color.primary ,
-        justifyContent: 'center', 
-        alignItems:'center',
-        paddingTop: Platform.OS === 'ios' ? 0 : 10,
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: DefaultTheme.color.primary,
+    },
+    innerContainer:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     titleBig:{
         fontSize: DefaultTheme.fontSize.titleBig,
@@ -86,5 +94,4 @@ export const GS = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
-
 })

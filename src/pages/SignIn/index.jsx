@@ -1,6 +1,6 @@
 //React
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Image } from "react-native";
+import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Image, ScrollView, TouchableWithoutFeedback, Keyboard } from "react-native";
 
 //Contexts
 import AuthContext from "../../contexts/auth";
@@ -31,10 +31,13 @@ const SignIn = ({ navigation }) => {
     }, [])
 
     return(
-        <KeyboardAvoidingView 
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={GS.container}
-        >
+    <ScrollView contentContainerStyle={GS.ScrollContainer} >
+    <KeyboardAvoidingView
+        style={GS.container}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <>
             <View style={styles.imgContainer}>
                 <Image 
                     style={styles.img}
@@ -98,7 +101,10 @@ const SignIn = ({ navigation }) => {
                 Cadastre-se
             </Text>
             <View style={{height:10}}/>
-        </KeyboardAvoidingView >   
+    </>
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+    </ScrollView>
     )
 }
 

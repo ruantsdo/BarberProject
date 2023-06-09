@@ -1,7 +1,7 @@
 //React
 import React, { useContext, useEffect, useState } from "react";
 import { Modal, View, Text, TouchableOpacity, KeyboardAvoidingView, 
-        Platform, TouchableWithoutFeedback, ScrollView, Button, Image } from "react-native";
+        TouchableWithoutFeedback, ScrollView, Image, Keyboard, Platform } from "react-native";
 
 //Styles
 import styles from "./styles"
@@ -17,7 +17,7 @@ import { TextInput } from "@react-native-material/core"
 import AuthContext from "../../contexts/auth"
 
 // Date Picker
-import DatePicker from "react-native-modern-datepicker";
+import DatePicker from "react-native-modern-datepicker"
 
 
 const UserRegister = () => {
@@ -50,13 +50,13 @@ const UserRegister = () => {
     }
 
     return(
-        <ScrollView contentContainerStyle={GS.ScrollContainer}>
-        <KeyboardAvoidingView 
-            style={GS.container}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-        <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss}}>
-        <>
+    <ScrollView contentContainerStyle={GS.ScrollContainer} >
+    <KeyboardAvoidingView
+        style={GS.container}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <>  
             <Text style={GS.titleSmall}>Crie sua conta</Text>
             {selectedImage ? (
                 <TouchableOpacity onPress={pickImage}>
@@ -168,10 +168,10 @@ const UserRegister = () => {
                 </TouchableOpacity>              
             }  
             <View style={{height:10}}/>
-        </>
-        </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-        </ScrollView>
+    </>
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+    </ScrollView>
     )
 }
 

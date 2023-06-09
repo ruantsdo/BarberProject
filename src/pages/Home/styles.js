@@ -4,6 +4,8 @@ import { DefaultTheme } from "../../themes/colors&sizes.theme";
 const styles = StyleSheet.create({
     container:{
         flex:1,
+        width: '100%',
+        height: '100%',
         backgroundColor: DefaultTheme.color.primary ,
         paddingTop: Platform.OS === 'ios' ? 0 : 5,
     },
@@ -24,13 +26,15 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'space-evenly',
     },
-    buttonContainer :{
+    buttonContainer: {
         width: 70,
         height: 70,
+        borderColor: 'white',
+        borderWidth: 1,
         borderRadius: 5,
-        backgroundColor: DefaultTheme.color.tertiary,
+        backgroundColor: DefaultTheme.color.primary,
     },
-    buttonIcon :{
+    buttonIcon: {
         color: 'white',
     }
 })
