@@ -52,7 +52,7 @@ const UserRegister = () => {
     return(
     <ScrollView contentContainerStyle={GS.ScrollContainer} >
     <KeyboardAvoidingView
-        style={GS.container}
+        style={GS.innerContainer}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

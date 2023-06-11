@@ -33,10 +33,10 @@ const SignIn = ({ navigation }) => {
     return(
     <ScrollView contentContainerStyle={GS.ScrollContainer} >
     <KeyboardAvoidingView
-        style={GS.container}
+        style={GS.innerContainer}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
     <>
             <View style={styles.imgContainer}>
                 <Image 

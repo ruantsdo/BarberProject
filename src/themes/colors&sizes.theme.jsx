@@ -6,7 +6,7 @@ export const DefaultTheme = {
         gold: '#DAA520',
         white: '#ffffff',
         positive: '#68A015',
-        primaryContrast: '#5F605E',
+        primaryContrast: 'rgba(255,255,255,0.05)',
         link: '#1877f2',
         gray: '#bdbdbd',
         alert: '#ff0301'

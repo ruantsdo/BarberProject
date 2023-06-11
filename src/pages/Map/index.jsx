@@ -11,19 +11,31 @@ import { GS } from "../../styles/global.styles";
 //Contexts
 import AuthContext from "../../contexts/auth";
 
+
+import MapView from 'react-native-maps'
+
+
 const Maps = ({ navigation }) => {
     const {} = useContext(AuthContext)
 
     return(
     <ScrollView contentContainerStyle={GS.ScrollContainer} >
     <KeyboardAvoidingView
-    style={GS.container}
-    behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={GS.container}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <>
-        <Text>Está na página de Maps</Text>
-        <Button title="Home" onPress={() => navigation.navigate("Home")} />
+        <MapView
+            style={styles.mapView}
+            initialRegion={{
+                latitude: 37.78825,
+                longitude: -122.4324,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+            }}
+        />
+        <Button title="Obter Localização" />
     </>
     </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
