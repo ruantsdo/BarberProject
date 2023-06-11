@@ -1,11 +1,6 @@
 //React 
-<<<<<<< Updated upstream
-import React, { useContext } from "react";
-import { View, Button, Text,
-=======
 import React, { useContext, useState, useEffect } from "react";
 import { View, Button, Text, ActivityIndicator,
->>>>>>> Stashed changes
         KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView, Keyboard } from "react-native";
 
 //Styles
@@ -16,20 +11,13 @@ import { GS } from "../../styles/global.styles";
 //Contexts
 import AuthContext from "../../contexts/auth";
 
-
-<<<<<<< Updated upstream
-import MapView from 'react-native-maps'
-=======
 import MapView, { Marker } from 'react-native-maps'
 import * as Location from 'expo-location';
->>>>>>> Stashed changes
 
 
 const Maps = ({ navigation }) => {
     const {} = useContext(AuthContext)
 
-<<<<<<< Updated upstream
-=======
     const [location, setLocation] = useState(null)
     const [errorMsg, setErrorMsg] = useState(null)
 
@@ -37,10 +25,6 @@ const Maps = ({ navigation }) => {
 
     useEffect(() => {
         handleGetLocation()
-        .then((location) => {
-            setLocation(location)
-            setLoading(false)
-        })
     }, [])
     
     const handleGetLocation = async () => {
@@ -53,7 +37,7 @@ const Maps = ({ navigation }) => {
 
         try {
             let location = await Location.getCurrentPositionAsync({});
-            return location;
+            setLocation(location);
         } catch (error) {
             setErrorMsg('Erro ao obter a localização');
             console.log(errorMsg);
@@ -62,7 +46,6 @@ const Maps = ({ navigation }) => {
         }
     };
     
->>>>>>> Stashed changes
     return(
     <ScrollView contentContainerStyle={GS.ScrollContainer} >
     <KeyboardAvoidingView
@@ -71,7 +54,7 @@ const Maps = ({ navigation }) => {
     >
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <>
-    {/*{   loading ? 
+    {   loading ? 
         <View style={styles.mapView}>
             <ActivityIndicator size="large" />
             <Text style={{color:DefaultTheme.color.white}}> Obtendo localização </Text>
@@ -79,45 +62,25 @@ const Maps = ({ navigation }) => {
     :
         <MapView
             style={styles.mapView}
+            zoomControlEnabled
             region={{
-            latitude: location.coords.latitude || -23.545822589523894,
-            longitude: location.coords.longitude || -46.62765349290326,
+            latitude: location?.coords.latitude || -23.545822589523894,
+            longitude: location?.coords.longitude || -46.62765349290326,
             latitudeDelta: 0.0,
             longitudeDelta: 0.0,
             }}
         >
-             <Marker
+            <Marker
                 coordinate={{
-                    latitude: location.coords.latitude,
-                    longitude: location.coords.longitude,
+                    latitude: location?.coords.latitude || -23.545822589523894,
+                    longitude: location?.coords.longitude || -46.62765349290326,
                 }}
                 title="Minha Localização"
                 description="Você está aqui!"
             />
+             
         </MapView>
-    }*/}
-    <MapView
-       style={styles.mapView}
-       region={{
-         latitude: -23.545822589523894,
-         longitude: -46.62765349290326,
-         latitudeDelta: 0.0,
-         longitudeDelta: 0.0,
-       }}
-    >
-        <Marker
-            coordinate={{
-                latitude: -23.545822589523894,
-                longitude: -46.62765349290326,
-            }}
-            title="Minha Localização"
-            description="Você está aqui!"
-        />
-<<<<<<< Updated upstream
-        <Button title="Obter Localização" />
-=======
-    </MapView>
->>>>>>> Stashed changes
+    }
     </>
     </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
