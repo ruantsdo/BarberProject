@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
         height: '40%',
 
         marginTop: 10,
+        backgroundColor: DefaultTheme.color.primaryContrast,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 })
 
