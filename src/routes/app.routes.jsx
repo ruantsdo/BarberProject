@@ -41,7 +41,7 @@ const AppRoutes = () =>(
         <AppStack.Screen name="StoreRegister" component={StoreRegister} options={{headerTitle: 'Novo estabelecimento'}}/>
         <AppStack.Screen name="Config" component={Config} options={{headerTitle: 'Configurações'}}/>
         <AppStack.Screen name="Map" component={Maps} options={{headerTitle: 'Mapa'}}/>
-        <AppStack.Screen name="AutenticadedPasswordChange" component={AutenticadedPasswordChange} options={{headerShown: false}} />
+        <AppStack.Screen name="AutenticadedPasswordChange" component={AutenticadedPasswordChange} options={{headerTitle: 'Mudar Senha'}} />
         <AppStack.Screen name="UserProfile" component={UserProfile} options={{headerTitle: 'Perfil'}}/>
     </AppStack.Navigator>
 )

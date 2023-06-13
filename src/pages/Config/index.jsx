@@ -11,10 +11,10 @@ import { GS } from "../../styles/global.styles";
 //Contexts
 import AuthContext from "../../contexts/auth";
 
-import { Entypo, FontAwesome5 } from '@expo/vector-icons';
+import { Entypo, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 
 const Config = ({ navigation }) => {
-    const {} = useContext(AuthContext)
+    const { firebaseSignOut } = useContext(AuthContext)
 
     const [location, setLocation] = useState(true);
     const [data, setData] = useState(true)
@@ -27,14 +27,13 @@ const Config = ({ navigation }) => {
     >
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <> 
-        <TouchableOpacity style={styles.buttonContainer}>
-            <Entypo name="key" size={24} color="black" />
-            <Text>Mudar senha</Text>
-            <View style={{width:90}}/>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("AutenticadedPasswordChange")}>
+            <Entypo name="key" size={24} color="black" style={styles.icon} />
+            <Text style={styles.text} >Mudar senha</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonContainer} onPress={() => setLocation(!location)} >
-            <Entypo name="location-pin" size={24} color="black" />
-            <Text>Permitir localização</Text>
+            <Entypo name="location-pin" size={24} color="black" style={styles.icon} />
+            <Text style={styles.text} >Permitir localização</Text>
             <Switch 
                 value={location} 
                 onValueChange={() => setLocation(!location)} 
@@ -44,8 +43,8 @@ const Config = ({ navigation }) => {
             />
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonContainer} onPress={() => setData(!data)} >
-            <FontAwesome5 name="signal" size={24} color="black" />
-            <Text>Permitir uso de dados</Text>
+            <MaterialIcons name="signal-cellular-alt" size={24} color="black" style={styles.icon} />
+            <Text style={styles.text} >Permitir uso de dados</Text>
             <Switch 
                 value={data} 
                 onValueChange={() => setData(!data)} 
@@ -53,6 +52,10 @@ const Config = ({ navigation }) => {
                 trackColor={{false: '#767577', true: '#767577'}}
                 thumbColor={data ? DefaultTheme.color.positive : "#f4f3f4"}
             />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonContainer} onPress={firebaseSignOut}>
+            <Entypo name="log-out" size={24} color="black" style={styles.icon}/>
+            <Text style={styles.text} >Sair</Text>
         </TouchableOpacity>
     </>
     </TouchableWithoutFeedback>

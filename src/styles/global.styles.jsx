@@ -8,9 +8,6 @@ export const GS = StyleSheet.create({
     },
     container:{
         flex: 1,
-        width: '100%',
-        height: '100%',
-        
         alignItems: 'center',
         backgroundColor: DefaultTheme.color.primary,
     },
@@ -52,8 +49,9 @@ export const GS = StyleSheet.create({
         alignItems: "center",
         backgroundColor: DefaultTheme.color.positive,
         borderRadius: 10,
-        marginTop: 30,
+        marginTop: 20,
         marginBottom: 20,
+        paddingBottom: '1%',
     },
     textButton:{
         fontSize: DefaultTheme.fontSize.text,

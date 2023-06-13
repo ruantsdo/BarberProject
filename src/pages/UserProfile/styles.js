@@ -28,9 +28,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: '90%',
 
-        marginTop: '52%',
+        bottom: 16,
+        right: 16,
 
-        alignSelf: 'center',
         justifyContent: 'space-between',
 
         flexDirection: 'row',
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textShadowColor: DefaultTheme.color.primary,
         textShadowOffset: { width: 1, height: 1 },
-        textShadowRadius: 2,
+        textShadowRadius: 5,
     },
 
     // Image -- End

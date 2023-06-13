@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        //justifyContent: 'space-around',
 
         padding: 10,
         borderRadius: 10,
@@ -21,9 +21,17 @@ const styles = StyleSheet.create({
         marginTop: 15, 
     },
     switchButton: {
-        color: 'red',
+        position: 'absolute',
+        right: 20,
     },
-
+    icon: {
+        position: 'absolute',
+        left: 20,
+    },
+    text: {
+        position: 'absolute',
+        left: 70,
+    },
 })
 
 export default styles

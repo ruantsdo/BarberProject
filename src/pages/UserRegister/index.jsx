@@ -103,7 +103,7 @@ const UserRegister = () => {
                 transparent={true}
                 visible={openCalendar}
             >
-                <View style={styles.centeredView}>
+                <View style={styles.centeredView} >
                     <View style={styles.modalView}>
                         <DatePicker 
                             mode='calendar'
@@ -112,7 +112,7 @@ const UserRegister = () => {
                             locale="de"
                         />
                         <TouchableOpacity onPress={() => setOpenCalendar(!openCalendar)}>
-                            <Text>Voltar</Text>
+                            <Text>Pronto</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

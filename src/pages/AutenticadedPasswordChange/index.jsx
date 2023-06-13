@@ -1,7 +1,7 @@
 //React 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { View, Button, Text, 
-        KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView, Keyboard } from "react-native";
+        KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView, Keyboard, TouchableOpacity  } from "react-native";
 
 //Styles
 import styles from "./styles"
@@ -11,23 +11,39 @@ import { GS } from "../../styles/global.styles";
 //Contexts
 import AuthContext from "../../contexts/auth";
 
+// Material UI
+import { TextInput } from "@react-native-material/core"
+
 const AutenticadedPasswordChange = ({ navigation }) => {
     const {} = useContext(AuthContext)
 
+    const [email, setEmail] = useState("")
+
     return(
-        <ScrollView contentContainerStyle={GS.ScrollContainer} >
-        <KeyboardAvoidingView
+    <ScrollView contentContainerStyle={GS.ScrollContainer} >
+    <KeyboardAvoidingView
         style={GS.container}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <> 
-            <Text>Está na página de AutenticadedPasswordChange</Text>
-            <Button title="Home" onPress={() => navigation.navigate("Home")} />
-        </>
-        </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-        </ScrollView>
+    >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <> 
+        <TextInput 
+            style={GS.textInput}
+            color={DefaultTheme.color.tertiary}
+            label="Email"
+            type="text"
+            onChangeText={(text) => setEmail(text)}
+            value={email}
+            autoCapitalize="none"
+        />
+        <TouchableOpacity style={GS.button}>
+            <Text style={GS.textButton} >Alterar Senha</Text>
+        </TouchableOpacity>
+        <Button title="Home" onPress={() => navigation.navigate("Home")} />
+    </>
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+    </ScrollView>
     )
 }
 

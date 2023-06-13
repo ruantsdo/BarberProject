@@ -9,8 +9,10 @@ import { DefaultTheme } from "../../themes/colors&sizes.theme";
 import { GS } from "../../styles/global.styles";
 import { TextInput } from "@react-native-material/core";
 
+
 //Contexts
 import AuthContext from "../../contexts/auth";
+import { MaterialIcons } from '@expo/vector-icons';
 
 //Icons
 import { MaterialCommunityIcons } from "@expo/vector-icons"
@@ -25,20 +27,31 @@ const StoreRegister = ({ }) => {
     const [site, setSite] = useState("")
     const [type, setType] = useState("")
     const [desc, setDesc] = useState("")
+    const [opens, setOpens] = useState("")
+    const [closes, setCloses] = useState("")
 
     const [show, setShow] = useState(false)
+    const [showOpens, setShowOpens] = useState(false)
+    const [showCloses, setShowCloses] = useState(false)
     const [warningMenssage, setWarningMenssage] = useState(false)
 
 
     return(
     <ScrollView contentContainerStyle={GS.ScrollContainer} >
     <KeyboardAvoidingView
-    style={GS.container}
-    behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={GS.container}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
     <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss ; setShow(false) }}>
     <>
             <Text style={styles.title}>Insira os dados do seu estabelecimento</Text>
+            <TouchableOpacity style={styles.imageContainer}>
+                    <MaterialIcons 
+                        name="add-a-photo"
+                        size={64}
+                        color={DefaultTheme.color.gray}
+                    />
+            </TouchableOpacity>
             <TextInput 
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}
@@ -121,6 +134,54 @@ const StoreRegister = ({ }) => {
                     </View>
                 </View>
             </Modal>
+            <View style={styles.timeConteiner}>
+                <TextInput 
+                    showSoftInputOnFocus={false}
+                    style={styles.timeInput}
+                    color={DefaultTheme.color.tertiary}
+                    label="Abre as"
+                    type="text"
+                    onPressOut={() => {setShowOpens(!showOpens)}}
+                    value={opens}
+                />
+                <Modal
+                    animationType='slide'
+                    transparent={true}
+                    visible={showOpens}
+                >
+                <View style={styles.centeredView} >
+                    <View style={styles.modalView}>
+                        
+                        <TouchableOpacity onPress={() => setShowOpens(!showOpens)}>
+                            <Text>Pronto</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                </Modal>
+                <TextInput 
+                    showSoftInputOnFocus={false}
+                    style={styles.timeInput}
+                    color={DefaultTheme.color.tertiary}
+                    label="Fecha as"
+                    type="text"
+                    onPressOut={() => {setShowCloses(!showCloses)}}
+                    value={closes}
+                />
+                <Modal
+                    animationType='slide'
+                    transparent={true}
+                    visible={showCloses}
+                >
+                <View style={styles.centeredView} >
+                    <View style={styles.modalView}>
+                        
+                        <TouchableOpacity onPress={() => setShowCloses(!showCloses)}>
+                            <Text>Pronto</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                </Modal>
+            </View>
             <TextInput 
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}

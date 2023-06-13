@@ -1,5 +1,5 @@
 //React 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { View, Button, Text,
         KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView, Keyboard } from "react-native";
 
@@ -14,6 +14,8 @@ import AuthContext from "../../contexts/auth";
 const PasswordChange = ({ navigation }) => {
     const {} = useContext(AuthContext)
 
+    const [email, setEmail] = useState("")
+
     return(
     <ScrollView contentContainerStyle={GS.ScrollContainer} >
     <KeyboardAvoidingView
@@ -22,7 +24,15 @@ const PasswordChange = ({ navigation }) => {
     >
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <> 
-        <Text>Está na página de PasswordChange</Text>
+        <TextInput 
+            style={GS.textInput}
+            color={DefaultTheme.color.tertiary}
+            label="Email"
+            type="text"
+            onChangeText={(text) => setEmail(text)}
+            value={email}
+            autoCapitalize="none"
+        />
         <Button title="Home" onPress={() => navigation.navigate("Home")} />
     </>
     </TouchableWithoutFeedback>
