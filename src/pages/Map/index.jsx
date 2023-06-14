@@ -54,7 +54,7 @@ const Maps = ({ navigation }) => {
     >
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <>
-    {   loading ? 
+    { loading ? 
         <View style={styles.mapView}>
             <ActivityIndicator size="large" />
             <Text style={{color:DefaultTheme.color.white}}> Obtendo localização </Text>
@@ -77,8 +77,7 @@ const Maps = ({ navigation }) => {
                 }}
                 title="Minha Localização"
                 description="Você está aqui!"
-            />
-             
+            />  
         </MapView>
     }
     </>

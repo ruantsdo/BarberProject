@@ -111,17 +111,22 @@ export const AuthProvider = ({ children }) => {
             .then((imageUrl) => {
                 writeUserInDB(response, name, email, birth, imageUrl);
                 handleUserData(response);
+                return
             })
             .catch((error) => {
                 console.log("Erro: ", error)
             });
-        }).catch((error) => {
+
+            writeUserInDB(response, name, email, birth, imageUrl);
+            handleUserData(response)
+        }
+        ).catch((error) => {
             setRegisterError(true)
             setErrorText("Falha ao realizar cadastro")
             const errorCode = error.code;
             const errorMessage = error.message;
             setLoading(false)
-        });
+        })
     }
 
     function firebaseSignOut(){
