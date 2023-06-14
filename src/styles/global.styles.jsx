@@ -5,6 +5,7 @@ export const GS = StyleSheet.create({
     ScrollContainer:{
         flexGrow: 1,
         backgroundColor: DefaultTheme.color.primary,
+        paddingBottom: 80,
     },
     container:{
         flex: 1,

@@ -37,6 +37,7 @@ const StoreRegister = ({ }) => {
 
 
     return(
+    
     <ScrollView contentContainerStyle={GS.ScrollContainer} >
     <KeyboardAvoidingView
         style={GS.container}
