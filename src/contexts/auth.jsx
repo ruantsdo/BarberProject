@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }) => {
         });
     }
 
-    async function resgisterWithEmail( name, email, birth, password){
+    async function resgisterWithEmail( name, email, birth, password, bio){
         setLoading(true)
 
         await createUserWithEmailAndPassword(auth, email, password )
@@ -109,7 +109,7 @@ export const AuthProvider = ({ children }) => {
             AsyncStorage.setItem('@APPAuth:token', JSON.stringify(response))
             uploadImage(response, selectedImage)
             .then((imageUrl) => {
-                writeUserInDB(response, name, email, birth, imageUrl);
+                writeUserInDB(response, name, email, birth, imageUrl, bio);
                 handleUserData(response);
                 return
             })
@@ -117,7 +117,7 @@ export const AuthProvider = ({ children }) => {
                 console.log("Erro: ", error)
             });
 
-            writeUserInDB(response, name, email, birth, imageUrl);
+            writeUserInDB(response, name, email, birth, imageUrl, bio);
             handleUserData(response)
         }
         ).catch((error) => {
@@ -146,13 +146,14 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)
     }
 
-    async function writeUserInDB(response, name, email, birth, imageUrl ){
+    async function writeUserInDB( response, name, email, birth, imageUrl, bio ){
         setLoading(true)
         await setDoc(doc(db, "users", response.uid), {
             name: name,
             email: email,
             birth: birth,
             photoUrl: imageUrl,
+            bio: bio,
           });
     }
 

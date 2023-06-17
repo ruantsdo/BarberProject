@@ -15,6 +15,8 @@ import { AppBar, HStack, IconButton, Button } from "@react-native-material/core"
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { AntDesign } from '@expo/vector-icons';
 
+import TargetInHome from '../../components/TargetInHome'
+
 const Home = ({ navigation }) => {
     const {firebaseSignOut, user, setErrorText } = useContext(AuthContext)
 

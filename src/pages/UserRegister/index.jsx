@@ -29,6 +29,7 @@ const UserRegister = () => {
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const [name, setName] = useState("")
     const [birth, setBirth] = useState("")
+    const [bio, setBio] = useState(null)
 
     const [warning, setWarning] = useState(<View style={{height:10}} />)
     const [openCalendar, setOpenCalendar] = useState(false)
@@ -79,6 +80,15 @@ const UserRegister = () => {
                 onChangeText={(text) => setName(text)}
                 value={name}
                 autoCapitalize="words"
+            />
+            <TextInput 
+                style={GS.textInput}
+                color={DefaultTheme.color.tertiary}
+                label="Um pouco sobre você"
+                type="text"
+                onChangeText={(text) => setBio(text)}
+                value={bio}
+                multiline
             />
             <TextInput 
                 style={GS.textInput}
@@ -162,7 +172,7 @@ const UserRegister = () => {
             :
                 <TouchableOpacity 
                     style={GS.button}
-                    onPress={() => resgisterWithEmail( name, email, birth, password )}
+                    onPress={() => resgisterWithEmail( name, email, birth, password, bio )}
                 >
                     <Text style={GS.textButton}>Cadastrar</Text>
                 </TouchableOpacity>              
