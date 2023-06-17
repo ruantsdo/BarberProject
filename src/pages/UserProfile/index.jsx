@@ -61,9 +61,7 @@ const UserProfile = ({ navigation }) => {
         <View style={styles.userInfosContainer}>
             <Text style={styles.infoTitle} >Bio</Text>
             <Text style={styles.infoDesc} >
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
-                Vero deleniti voluptate tempore impedit laudantium quos a praesentium blanditiis, 
-                numquam optio? Minima, adipisci! Deserunt repellendus quis unde, debitis placeat quisquam magni. 
+                {user.bio}
             </Text>
         </View>
         <View style={styles.userInfosContainer}>
