@@ -1,6 +1,6 @@
 //React
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, View, Text, TouchableOpacity, KeyboardAvoidingView, 
+import { View, Text, TouchableOpacity, KeyboardAvoidingView, 
         TouchableWithoutFeedback, ScrollView, Image, Keyboard, Platform } from "react-native";
 
 //Styles
@@ -17,7 +17,7 @@ import { TextInput } from "@react-native-material/core"
 import AuthContext from "../../contexts/auth"
 
 // Date Picker
-import DatePicker from "react-native-modern-datepicker"
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 const UserRegister = () => {
@@ -28,11 +28,23 @@ const UserRegister = () => {
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const [name, setName] = useState("")
-    const [birth, setBirth] = useState("")
+    
     const [bio, setBio] = useState(null)
+    const [city, setCity] = useState("")
 
     const [warning, setWarning] = useState(<View style={{height:10}} />)
     const [openCalendar, setOpenCalendar] = useState(false)
+
+    const [birth, setBirth] = useState(null)
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const handleDate = (event, selected) => {
+        const currentTime = selected || selectedDate;
+        setOpenCalendar(false)
+        setSelectedDate(currentTime)
+        const formattedDate = `${currentTime.getDate()}/${currentTime.getMonth() + 1}/${currentTime.getFullYear()}`
+        setBirth(formattedDate)
+    };
 
 
     useEffect(()=>{
@@ -75,7 +87,7 @@ const UserRegister = () => {
             <TextInput 
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}
-                label="Digite seu nome"
+                label="Nome"
                 type="text"
                 onChangeText={(text) => setName(text)}
                 value={name}
@@ -84,7 +96,7 @@ const UserRegister = () => {
             <TextInput 
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}
-                label="Um pouco sobre você"
+                label="Fale um pouco sobre você"
                 type="text"
                 onChangeText={(text) => setBio(text)}
                 value={bio}
@@ -93,12 +105,22 @@ const UserRegister = () => {
             <TextInput 
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}
-                label="Informe seu email"
+                label="Email"
                 type="email"
                 onChangeText={(text) => setEmail(text)}
                 onChange={()=> setRegisterError(false)}
                 value={email}
                 autoCapitalize="none"
+            />
+            <TextInput 
+                style={GS.textInput}
+                color={DefaultTheme.color.tertiary}
+                label="Cidade"
+                type="email"
+                onChangeText={(text) => setCity(text)}
+                onChange={()=> setRegisterError(false)}
+                value={city}
+                autoCapitalize="words"
             />
             <TextInput 
                 showSoftInputOnFocus={false}
@@ -108,29 +130,19 @@ const UserRegister = () => {
                 onPressIn={() => setOpenCalendar(!openCalendar)}
                 value={birth}
             />
-            <Modal
-                animationType='slide'
-                transparent={true}
-                visible={openCalendar}
-            >
-                <View style={styles.centeredView} >
-                    <View style={styles.modalView}>
-                        <DatePicker 
-                            mode='calendar'
-                            date={birth}
-                            onDateChange={(date) => setBirth(date)}
-                            locale="de"
-                        />
-                        <TouchableOpacity onPress={() => setOpenCalendar(!openCalendar)}>
-                            <Text>Pronto</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
+            {openCalendar && (
+                <DateTimePicker
+                value={selectedDate}
+                mode="date"
+                is24Hour={true}
+                display="default"
+                onChange={handleDate}
+                />
+            )}
             <TextInput 
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}
-                label="Digite sua nova senha"
+                label="Nova senha"
                 secureTextEntry={true}
                 type="text"
                 onChangeText={(text) => {setPassword(text) ; checkPassword()}}
@@ -172,7 +184,7 @@ const UserRegister = () => {
             :
                 <TouchableOpacity 
                     style={GS.button}
-                    onPress={() => resgisterWithEmail( name, email, birth, password, bio )}
+                    onPress={() => resgisterWithEmail( name, email, birth, password, bio, city )}
                 >
                     <Text style={GS.textButton}>Cadastrar</Text>
                 </TouchableOpacity>              

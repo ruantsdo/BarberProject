@@ -18,7 +18,7 @@ const TargetInHome = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const q = query(collection(db, "users"));
+                const q = query(collection(db, "establishments"));
                 const querySnapshot = await getDocs(q);
                 const targetsData = [];
                 querySnapshot.forEach((doc) => {
@@ -40,7 +40,6 @@ const TargetInHome = () => {
                 <Text>{target.name}</Text>
                 <Text>{target.email}</Text>
               </View>
-                // Aqui você pode criar os componentes desejados com base nas informações do Firestore
             ))}
         </View>
       );

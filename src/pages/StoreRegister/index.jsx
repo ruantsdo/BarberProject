@@ -17,28 +17,52 @@ import { MaterialIcons } from '@expo/vector-icons';
 //Icons
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
+import DateTimePicker from '@react-native-community/datetimepicker'
+
 const StoreRegister = ({ }) => {
     const { writeStoreInDB } = useContext(AuthContext)
 
-    const [name, setName] = useState("")
-    const [address, setAddress] = useState("")
-    const [email, setEmail] = useState("")
-    const [phone, setPhone] = useState("")
-    const [site, setSite] = useState("")
-    const [type, setType] = useState("")
-    const [desc, setDesc] = useState("")
-    const [opens, setOpens] = useState("")
-    const [closes, setCloses] = useState("")
+    const [name, setName] = useState(null)
+    const [address, setAddress] = useState(null)
+    const [email, setEmail] = useState(null)
+    const [phone, setPhone] = useState(null)
+    const [site, setSite] = useState(null)
+    const [desc, setDesc] = useState(null)
 
+    const [type, setType] = useState(null)
     const [show, setShow] = useState(false)
-    const [showOpens, setShowOpens] = useState(false)
-    const [showCloses, setShowCloses] = useState(false)
+    
     const [warningMenssage, setWarningMenssage] = useState(false)
+
+    const [opens, setOpens] = useState(null)
+    const [selectedOpens, setSelectedOpens] = useState(new Date());
+    const [showOpens, setShowOpens] = useState(false)
+
+    const [closes, setCloses] = useState(null)
+    const [selectedCloses, setSelectedCloses] = useState(new Date());
+    const [showCloses, setShowCloses] = useState(false)
+  
+    const handleOpens = (event, selected) => {
+        const currentTime = selected || selectedOpens;
+        setShowOpens(false);
+        setSelectedOpens(currentTime);
+        const formattedTime = currentTime.toISOString().split('T')[1].split('.')[0];
+        const timeWithoutSeconds = formattedTime.slice(0, -3);
+        setOpens(timeWithoutSeconds)
+    };
+
+    const handleCloses = (event, selected) => {
+        const currentTime = selected || selectedCloses;
+        setShowCloses(false);
+        setSelectedCloses(currentTime);
+        const formattedTime = currentTime.toISOString().split('T')[1].split('.')[0];
+        const timeWithoutSeconds = formattedTime.slice(0, -3);
+        setCloses(timeWithoutSeconds)
+    };
 
 
     return(
-    
-    <ScrollView contentContainerStyle={GS.ScrollContainer} >
+    <ScrollView contentContainerStyle={styles.ScrollContainer} >
     <KeyboardAvoidingView
         style={GS.container}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -140,48 +164,38 @@ const StoreRegister = ({ }) => {
                     showSoftInputOnFocus={false}
                     style={styles.timeInput}
                     color={DefaultTheme.color.tertiary}
-                    label="Abre as"
+                    label="Abre as*"
                     type="text"
-                    onPressOut={() => {setShowOpens(!showOpens)}}
+                    onPressOut={() => {setShowOpens(true)}}
                     value={opens}
                 />
-                <Modal
-                    animationType='slide'
-                    transparent={true}
-                    visible={showOpens}
-                >
-                <View style={styles.centeredView} >
-                    <View style={styles.modalView}>
-                        
-                        <TouchableOpacity onPress={() => setShowOpens(!showOpens)}>
-                            <Text>Pronto</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                </Modal>
+                {showOpens && (
+                    <DateTimePicker
+                        value={selectedOpens}
+                        mode="time"
+                        is24Hour={true}
+                        display="default"
+                        onChange={handleOpens}
+                    />
+                )}
                 <TextInput 
                     showSoftInputOnFocus={false}
                     style={styles.timeInput}
                     color={DefaultTheme.color.tertiary}
-                    label="Fecha as"
+                    label="Fecha as*"
                     type="text"
                     onPressOut={() => {setShowCloses(!showCloses)}}
                     value={closes}
                 />
-                <Modal
-                    animationType='slide'
-                    transparent={true}
-                    visible={showCloses}
-                >
-                <View style={styles.centeredView} >
-                    <View style={styles.modalView}>
-                        
-                        <TouchableOpacity onPress={() => setShowCloses(!showCloses)}>
-                            <Text>Pronto</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                </Modal>
+                {showCloses && (
+                    <DateTimePicker
+                        value={selectedCloses}
+                        mode="time"
+                        is24Hour={true}
+                        display="default"
+                        onChange={handleCloses}
+                    />
+                )}
             </View>
             <TextInput 
                 style={GS.textInput}
@@ -190,6 +204,7 @@ const StoreRegister = ({ }) => {
                 type="text"
                 onChangeText={(text) => setDesc(text)}
                 value={desc}
+                multiline
             />
             {warningMenssage ? 
             <View style={GS.alertContainer}>
@@ -203,7 +218,7 @@ const StoreRegister = ({ }) => {
             :
             <View />
             }
-            {name === "" || address === "" || phone === "" || type === "" ?
+            {name === null || address === null || phone === null || type === null || opens === null || closes === null ?
                 <TouchableOpacity 
                     title="Cadastrar" 
                     style={GS.button} 
@@ -214,7 +229,7 @@ const StoreRegister = ({ }) => {
                 <TouchableOpacity 
                     title="Cadastrar" 
                     style={GS.button} 
-                    onPress={() => writeStoreInDB( name, address, email, phone, site, type, desc)} >
+                    onPress={() => writeStoreInDB( name, address, email, phone, site, type, desc, opens, closes)} >
                         <Text style={GS.textButton}>Cadastrar</Text>
                 </TouchableOpacity>
             }

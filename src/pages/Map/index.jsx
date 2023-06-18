@@ -1,6 +1,6 @@
 //React 
 import React, { useContext, useState, useEffect } from "react";
-import { View, Button, Text, ActivityIndicator,
+import { View, Text, ActivityIndicator,
         KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView, Keyboard } from "react-native";
 
 //Styles

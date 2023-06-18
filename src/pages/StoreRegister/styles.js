@@ -2,6 +2,11 @@ import { StyleSheet } from "react-native"
 import { DefaultTheme } from "../../themes/colors&sizes.theme";
 
 const styles = StyleSheet.create({
+    ScrollContainer:{
+        flexGrow: 1,
+        backgroundColor: DefaultTheme.color.primary,
+        paddingBottom: 80,
+    },
     container: {
         flex: 1,
         alignItems: "center",

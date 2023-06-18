@@ -1,7 +1,7 @@
 //React 
 import React, { useContext, useState } from "react";
 import { Text, KeyboardAvoidingView, TouchableWithoutFeedback, 
-            ScrollView, Keyboard, TouchableOpacity, View, Switch } from "react-native";
+            ScrollView, Keyboard, TouchableOpacity, Switch } from "react-native";
 
 //Styles
 import styles from "./styles"

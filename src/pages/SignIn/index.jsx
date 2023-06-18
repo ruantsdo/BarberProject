@@ -1,6 +1,7 @@
 //React
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Image, ScrollView, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { View, Text, TouchableOpacity, KeyboardAvoidingView, 
+        Platform, Image, ScrollView, TouchableWithoutFeedback, Keyboard } from "react-native";
 
 //Contexts
 import AuthContext from "../../contexts/auth";

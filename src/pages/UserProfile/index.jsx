@@ -23,11 +23,11 @@ const UserProfile = ({ navigation }) => {
     const { user } = useContext(AuthContext)
 
     const calculateAge = () => {
-        const currentDate = new Date();
-        const [year, month, day] = user.birth.split('/')
-        const birthDate = parse(`${year}-${month}-${day}`, 'yyyy-MM-dd', new Date());
+        const currentDate = new Date()
+        const [day, month, year] = user.birth.split('/')
+        const birthDate = parse(`${day}-${month}-${year}`, 'dd-MM-yyyy', new Date())
 
-        const age = differenceInYears(currentDate, birthDate);
+        const age = differenceInYears(currentDate, birthDate)
 
         return age;
     };
@@ -71,9 +71,9 @@ const UserProfile = ({ navigation }) => {
             </Text>
         </View>
         <View style={styles.userInfosContainer}>
-            <Text style={styles.infoTitle} >Endereço</Text>
+            <Text style={styles.infoTitle} >Cidade</Text>
             <Text style={styles.infoDesc} >
-                Cidade - Estado 
+                {user.city}
             </Text>
         </View>
     </>

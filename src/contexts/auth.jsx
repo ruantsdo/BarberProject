@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }) => {
         });
     }
 
-    async function resgisterWithEmail( name, email, birth, password, bio){
+    async function resgisterWithEmail( name, email, birth, password, bio, city ){
         setLoading(true)
 
         await createUserWithEmailAndPassword(auth, email, password )
@@ -109,7 +109,7 @@ export const AuthProvider = ({ children }) => {
             AsyncStorage.setItem('@APPAuth:token', JSON.stringify(response))
             uploadImage(response, selectedImage)
             .then((imageUrl) => {
-                writeUserInDB(response, name, email, birth, imageUrl, bio);
+                writeUserInDB(response, name, email, birth, imageUrl, bio, city);
                 handleUserData(response);
                 return
             })
@@ -117,7 +117,7 @@ export const AuthProvider = ({ children }) => {
                 console.log("Erro: ", error)
             });
 
-            writeUserInDB(response, name, email, birth, imageUrl, bio);
+            writeUserInDB(response, name, email, birth, imageUrl, bio, city);
             handleUserData(response)
         }
         ).catch((error) => {
@@ -146,7 +146,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)
     }
 
-    async function writeUserInDB( response, name, email, birth, imageUrl, bio ){
+    async function writeUserInDB( response, name, email, birth, imageUrl, bio, city ){
         setLoading(true)
         await setDoc(doc(db, "users", response.uid), {
             name: name,
@@ -154,10 +154,11 @@ export const AuthProvider = ({ children }) => {
             birth: birth,
             photoUrl: imageUrl,
             bio: bio,
+            city: city,
           });
     }
 
-    async function writeStoreInDB( name, address, email, phone, site, type, desc ){
+    async function writeStoreInDB( name, address, email, phone, site, type, desc, opens, closes ){
         setLoading(true)
 
         await setDoc(doc(db, "establishments", token.uid), {
@@ -169,6 +170,8 @@ export const AuthProvider = ({ children }) => {
             website: site,
             type: type,
             description: desc,
+            opens: opens,
+            closes: closes,
         });
 
         setLoading(false)

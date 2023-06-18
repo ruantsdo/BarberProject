@@ -1,7 +1,7 @@
 //React 
 import React, { useContext, useState } from "react";
-import { View, Button, Text,
-        KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView, Keyboard } from "react-native";
+import { Button, 
+         KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView, Keyboard } from "react-native";
 
 //Styles
 import styles from "./styles"
