@@ -1,6 +1,6 @@
 //React 
-import React, { useContext, useEffect } from "react";
-import { View, Text, Image, 
+import React, { useContext, useEffect, useState } from "react";
+import { View, Text, Image, RefreshControl, 
         KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView, Keyboard } from "react-native";
 
 //Contexts
@@ -15,17 +15,48 @@ import { AppBar, HStack, IconButton, Button } from "@react-native-material/core"
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { AntDesign } from '@expo/vector-icons';
 
+// Firebase
+import { db } from "../../services/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
+
 import TargetInHome from '../../components/TargetInHome'
 
 const Home = ({ navigation }) => {
     const {firebaseSignOut, user, setErrorText } = useContext(AuthContext)
 
     useEffect(()=>{
-        setErrorText("")
-    },[])
+        setErrorText("") 
+    }, [])
+
+    const [refreshing, setRefreshing] = useState(false);
+    const [targetData, setTargetData] = useState([])
+
+    const fetchTargetData = async () => {
+        try {
+            const q = query(collection(db, "establishments"));
+            const querySnapshot = await getDocs(q);
+            const targetsData = [];
+            querySnapshot.forEach((doc) => {
+                targetsData.push(doc.data());
+            });
+            setTargetData(targetsData);
+        } catch (error) {
+            console.error("Erro ao ler dados do Firestore:", error);
+        }
+    };
+
+    const onRefresh = () => {
+        setRefreshing(true);
+    
+        fetchTargetData()
+    
+        setRefreshing(false);
+    };
 
     return(
-    <ScrollView contentContainerStyle={GS.ScrollContainer} >
+    <ScrollView contentContainerStyle={GS.ScrollContainer} refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
     <KeyboardAvoidingView
         style={GS.container}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -84,8 +115,11 @@ const Home = ({ navigation }) => {
                     />
                 </HStack>
         </View>
-        <View style={styles.body}>
-            <Text style={GS.titleMicro} > Nas Proximidades </Text>
+        <View style={{ flex: 1 }}>
+            <Text style={GS.titleMicro} > Sugestões </Text>
+            <View>
+                <TargetInHome targetData={targetData} fetchTargetData={fetchTargetData} />
+            </View>
             <Button onPress={firebaseSignOut} style={{width: '60%', alignSelf: 'center'}} variant="contained" title="Sair" />
         </View>
     </View>

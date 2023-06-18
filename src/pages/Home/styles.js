@@ -36,6 +36,13 @@ const styles = StyleSheet.create({
     },
     buttonIcon: {
         color: 'white',
+    },
+    cards: {
+        flexGrow: 1,
+        flexDirection: 'column',
+        width: '90%',
+        alignSelf: 'center',
+        alignItems: 'center',
     }
 })
 

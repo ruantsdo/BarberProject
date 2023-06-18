@@ -1,7 +1,7 @@
 //React 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, KeyboardAvoidingView, Modal, TouchableOpacity, 
-        ScrollView, Keyboard, TouchableWithoutFeedback, Platform } from "react-native";
+        ScrollView, Keyboard, TouchableWithoutFeedback, Platform, Image } from "react-native";
 
 //Styles
 import styles from "./styles"
@@ -20,7 +20,12 @@ import { MaterialCommunityIcons } from "@expo/vector-icons"
 import DateTimePicker from '@react-native-community/datetimepicker'
 
 const StoreRegister = ({ }) => {
-    const { writeStoreInDB } = useContext(AuthContext)
+    const { writeStoreInDB, pickImage, selectedImage, setSelectedImage, setImageUrl } = useContext(AuthContext)
+
+    useEffect(()=>{
+        setSelectedImage(null)
+        setImageUrl(null)
+    }, [])
 
     const [name, setName] = useState(null)
     const [address, setAddress] = useState(null)
@@ -70,13 +75,19 @@ const StoreRegister = ({ }) => {
     <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss ; setShow(false) }}>
     <>
             <Text style={styles.title}>Insira os dados do seu estabelecimento</Text>
-            <TouchableOpacity style={styles.imageContainer}>
+            {selectedImage ? (
+                <TouchableOpacity style={styles.imageContainer} onPress={pickImage} >
+                    <Image source={{ uri: selectedImage }} style={styles.image} />
+                </TouchableOpacity>
+            ) : (
+                <TouchableOpacity style={styles.imageContainer} onPress={pickImage} >
                     <MaterialIcons 
                         name="add-a-photo"
                         size={64}
                         color={DefaultTheme.color.gray}
                     />
-            </TouchableOpacity>
+                </TouchableOpacity>
+            )}
             <TextInput 
                 style={GS.textInput}
                 color={DefaultTheme.color.tertiary}

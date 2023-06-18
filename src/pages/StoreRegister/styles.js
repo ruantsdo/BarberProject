@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     ScrollContainer:{
         flexGrow: 1,
         backgroundColor: DefaultTheme.color.primary,
-        paddingBottom: 80,
+        paddingBottom: 140,
     },
     container: {
         flex: 1,
@@ -41,26 +41,6 @@ const styles = StyleSheet.create({
         borderColor: DefaultTheme.color.white,
         borderRadius: 15,
     },
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    modalView: {
-        backgroundColor: 'white',
-        borderRadius: 20,
-        width: '95%',
-        height: 'auto',
-        padding: 25,
-        alignItems: 'center',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
     timeConteiner: {
         width: '90%',
         justifyContent: 'space-between',
@@ -75,6 +55,15 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         padding: 10,
     },  
+    image: {
+        width: '100%',
+        height: '100%',
+
+        justifyContent: 'center',
+        alignItems: 'center',
+
+        borderRadius: 15,
+    },
 })
 
 export default styles

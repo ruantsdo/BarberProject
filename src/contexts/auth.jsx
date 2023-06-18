@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
         }
     }
     
-    async function uploadImage(token, uri) {
+    async function uploadUserImage(token, uri) {
         setLoading(true)
 
         const storage = getStorage();
@@ -69,6 +69,24 @@ export const AuthProvider = ({ children }) => {
         const downloadURL = await getDownloadURL(storageRef);
         setImageUrl(downloadURL)
         
+        return downloadURL;
+    }
+
+    async function uploadStoreImage(token, uri) {
+        setLoading(true)
+
+        const storage = getStorage();
+        const response = await fetch(uri);
+        const blob = await response.blob();
+        const fileExtension = uri.split('.').pop();
+        const filename = `${token}.${fileExtension}`;
+        
+        const storageRef = ref(storage, `storeImages/${filename}`);
+        await uploadBytes(storageRef, blob);
+
+        const downloadURL = await getDownloadURL(storageRef);
+        setImageUrl(downloadURL)
+       
         return downloadURL;
     }
       
@@ -107,14 +125,14 @@ export const AuthProvider = ({ children }) => {
         .then((userCredential) => {
             const response = userCredential.user;
             AsyncStorage.setItem('@APPAuth:token', JSON.stringify(response))
-            uploadImage(response, selectedImage)
+            uploadUserImage(response, selectedImage)
             .then((imageUrl) => {
                 writeUserInDB(response, name, email, birth, imageUrl, bio, city);
                 handleUserData(response);
                 return
             })
             .catch((error) => {
-                console.log("Erro: ", error)
+                console.log("Erro ao fazer upload da foto de perfil: ", error)
             });
 
             writeUserInDB(response, name, email, birth, imageUrl, bio, city);
@@ -161,6 +179,25 @@ export const AuthProvider = ({ children }) => {
     async function writeStoreInDB( name, address, email, phone, site, type, desc, opens, closes ){
         setLoading(true)
 
+        uploadStoreImage(token.uid, selectedImage).then((imageUrl) => {
+            setDoc(doc(db, "establishments", token.uid), {
+                owner: token.uid,
+                name: name,
+                address: address,
+                email: email,
+                phone: phone,
+                website: site,
+                type: type,
+                description: desc,
+                opens: opens,
+                closes: closes,
+                photoURL: imageUrl,
+            })
+            return
+        }).catch((error) => {
+            console.log("Erro ao fazer upload da imagem do estabelecimento: ", error)
+        });
+
         await setDoc(doc(db, "establishments", token.uid), {
             owner: token.uid,
             name: name,
@@ -172,7 +209,8 @@ export const AuthProvider = ({ children }) => {
             description: desc,
             opens: opens,
             closes: closes,
-        });
+            photoURL: imageUrl,
+        }),
 
         setLoading(false)
     }
