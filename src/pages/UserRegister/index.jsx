@@ -132,11 +132,11 @@ const UserRegister = () => {
             />
             {openCalendar && (
                 <DateTimePicker
-                value={selectedDate}
-                mode="date"
-                is24Hour={true}
-                display="default"
-                onChange={handleDate}
+                    value={selectedDate}
+                    mode="date"
+                    is24Hour={true}
+                    display="default"
+                    onChange={handleDate}
                 />
             )}
             <TextInput 

@@ -39,7 +39,6 @@ const AutenticadedPasswordChange = ({ navigation }) => {
         <TouchableOpacity style={GS.button}>
             <Text style={GS.textButton} >Alterar Senha</Text>
         </TouchableOpacity>
-        <Button title="Home" onPress={() => navigation.navigate("Home")} />
     </>
     </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

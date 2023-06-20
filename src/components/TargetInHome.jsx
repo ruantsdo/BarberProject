@@ -28,8 +28,8 @@ const TargetInHome = ({ targetData, fetchTargetData }) => {
       const [chour, cminute] = closes.split(':'); 
 
       if(ohour < chour){
-        if (parseInt(currentHour) >= parseInt(ohour) && parseInt(currentMinute) >= parseInt(ominute) 
-        && parseInt(currentHour) <= parseInt(chour) && parseInt(currentMinute) <= parseInt(cminute)){
+        if (parseInt(currentHour) >= parseInt(ohour)  
+        && parseInt(currentHour) <= parseInt(chour) ){
           return <Text style={{ position: 'absolute', left: 100, bottom: 10, color: 'green', fontWeight: 'bold' }}>Aberto</Text>
         } else {
           return <Text style={{ position: 'absolute', left: 90, bottom: 10, color: 'red', fontWeight: 'bold' }}>Fechado</Text>
@@ -37,21 +37,22 @@ const TargetInHome = ({ targetData, fetchTargetData }) => {
       }
 
       if(ohour > chour){
-        if (parseInt(currentHour) >= parseInt(chour) && parseInt(currentMinute) >= parseInt(ominute) 
-        && parseInt(currentHour) >= parseInt(ohour) && parseInt(currentMinute) >= parseInt(cminute)){
+        if (parseInt(currentHour) >= parseInt(chour)  
+        && parseInt(currentHour) >= parseInt(ohour) ){
           return <Text style={{ position: 'absolute', left: 100, bottom: 10, color: 'green', fontWeight: 'bold' }}>Aberto</Text>
         } else {
           return <Text style={{ position: 'absolute', left: 90, bottom: 10, color: 'red', fontWeight: 'bold' }}>Fechado</Text>
         }
       }
     }
+    //{getCurrentTime(target.opens, target.closes)}
 
       return (
         <View style={styles.container} >
             {targets.map((target, index) => (
               <TouchableOpacity key={index} style={styles.card} >
                 <Image source={{ uri: (target.photoURL) }} style={styles.image} />
-                {getCurrentTime(target.opens, target.closes)}
+                
                 <View style={styles.infoContainer}>
                   <View style={styles.info}>
                     <Text style={styles.text} > Nome</Text>

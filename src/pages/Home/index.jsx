@@ -120,7 +120,6 @@ const Home = ({ navigation }) => {
             <View>
                 <TargetInHome targetData={targetData} fetchTargetData={fetchTargetData} />
             </View>
-            <Button onPress={firebaseSignOut} style={{width: '60%', alignSelf: 'center'}} variant="contained" title="Sair" />
         </View>
     </View>
     </TouchableWithoutFeedback>
