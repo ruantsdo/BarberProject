@@ -24,7 +24,7 @@ const AuthRoutes = () =>(
     <AuthStack.Navigator initialRouteName="SignIn" screenOptions={headerStyle} >
         <AuthStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
         <AuthStack.Screen name="UserRegister" component={UserRegister} options={{title:"Cadastro"}} />
-        <AuthStack.Screen name="PasswordChange" component={PasswordChange}  options={{headerShown: false}} />
+        <AuthStack.Screen name="PasswordChange" component={PasswordChange}  options={{title:"Alterar senha"}} />
     </AuthStack.Navigator>
 )
 

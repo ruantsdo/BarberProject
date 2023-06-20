@@ -11,6 +11,14 @@ const styles = StyleSheet.create({
         color:DefaultTheme.color.link,
         fontSize: DefaultTheme.fontSize.text,
     },
+    passwordChange:{
+        color:DefaultTheme.color.white,
+        fontSize: DefaultTheme.fontSize.text,
+
+        alignSelf: 'flex-end',
+        marginTop: 15,
+        marginRight: 30,
+    },
     imgContainer: {
         backgroundColor: DefaultTheme.color.white,
         width: 120,

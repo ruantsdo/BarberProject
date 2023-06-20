@@ -68,6 +68,9 @@ const SignIn = ({ navigation }) => {
                 value={password}
                 autoCapitalize="none"
             />
+            <Text style={styles.passwordChange} onPress={() => navigation.navigate("PasswordChange")}>
+                Esqueci minha senha...
+            </Text>
             {loginError === true ? 
             <View style={GS.alertContainer}>
                 <MaterialCommunityIcons 

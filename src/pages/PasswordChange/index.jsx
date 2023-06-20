@@ -1,7 +1,7 @@
 //React 
 import React, { useContext, useState } from "react";
-import { Button, 
-         KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView, Keyboard } from "react-native";
+import { View, Button, Text, 
+        KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView, Keyboard, TouchableOpacity  } from "react-native";
 
 //Styles
 import styles from "./styles"
@@ -11,7 +11,10 @@ import { GS } from "../../styles/global.styles";
 //Contexts
 import AuthContext from "../../contexts/auth";
 
-const PasswordChange = ({ navigation }) => {
+// Material UI
+import { TextInput } from "@react-native-material/core"
+
+const AutenticadedPasswordChange = ({ navigation }) => {
     const {} = useContext(AuthContext)
 
     const [email, setEmail] = useState("")
@@ -33,7 +36,9 @@ const PasswordChange = ({ navigation }) => {
             value={email}
             autoCapitalize="none"
         />
-        <Button title="Home" onPress={() => navigation.navigate("Home")} />
+        <TouchableOpacity style={GS.button}>
+            <Text style={GS.textButton} >Alterar Senha</Text>
+        </TouchableOpacity>
     </>
     </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -41,4 +46,4 @@ const PasswordChange = ({ navigation }) => {
     )
 }
 
-export default PasswordChange
+export default AutenticadedPasswordChange
