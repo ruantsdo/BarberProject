@@ -1,20 +1,114 @@
-import React, { useContext } from "react";
-import { Button, View } from "react-native";
+//React
+import React, { useContext, useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, KeyboardAvoidingView, 
+        Platform, Image, ScrollView, TouchableWithoutFeedback, Keyboard } from "react-native";
 
-import { signIn } from './../../services/auth';
+//Contexts
 import AuthContext from "../../contexts/auth";
 
-const SignIn = () => {
-    const { signed, signIn } = useContext(AuthContext)
+//Styles
+import styles from './styles'
+import { DefaultTheme } from "../../themes/colors&sizes.theme"
+import { GS } from '../../styles/global.styles'
 
-    function handleSignIn(){
-        signIn()
-    }
+//Icons
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+
+// Material UI
+import { TextInput } from "@react-native-material/core"
+
+
+const SignIn = ({ navigation }) => {
+    const { signInWithEmail, loginError, setLoginError, setRegisterError, setErrorText, setSelectedImage, setImageUrl } = useContext(AuthContext)
+
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    useEffect(()=>{
+        setSelectedImage(null)
+        setImageUrl(null)
+        setRegisterError(false)
+        setErrorText("")  
+    }, [])
 
     return(
-        <View style={{flex:1, justifyContent: 'center', alignItems:'center'}}>
-            <Button title="Entrar" onPress={handleSignIn} />
-        </View>
+    <ScrollView contentContainerStyle={GS.ScrollContainer} >
+    <KeyboardAvoidingView
+        style={GS.innerContainer}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
+    <>
+            <View style={styles.imgContainer}>
+                <Image 
+                    style={styles.img}
+                    source={require('../../../assets/imgs/login-logo.png')}
+                />
+            </View>
+
+            <Text style={GS.titleBig}>BarberApp</Text>
+            <TextInput 
+                style={GS.textInput}
+                color={DefaultTheme.color.tertiary}
+                label="Email"
+                type="text"
+                onChangeText={(text) => setEmail(text)}
+                onChange={()=> setLoginError(false)}
+                value={email}
+                autoCapitalize="none"
+            />
+            <TextInput 
+                style={GS.textInput}
+                secureTextEntry={true}
+                label="Senha"
+                color={DefaultTheme.color.tertiary}
+                type="text"
+                onChangeText={(text) => setPassword(text)}
+                onChange={()=> setLoginError(false)}
+                value={password}
+                autoCapitalize="none"
+            />
+            <Text style={styles.passwordChange} onPress={() => navigation.navigate("PasswordChange")}>
+                Esqueci minha senha...
+            </Text>
+            {loginError === true ? 
+            <View style={GS.alertContainer}>
+                <MaterialCommunityIcons 
+                    name="alert-circle"
+                    size={24}
+                    color={DefaultTheme.color.gray}
+                />
+                <Text style={GS.alertText}>Email ou Senha Inválidos</Text>
+            </View>
+            :
+            <View />
+            }
+            {email === "" || password === "" ? 
+            <TouchableOpacity 
+                disabled={true}
+                style={GS.button}
+            >
+                <Text style={GS.textButton}>Entrar</Text>
+            </TouchableOpacity>  
+            :
+            <TouchableOpacity 
+                style={GS.button}
+                onPress={() => signInWithEmail(email, password)}
+            >
+                <Text style={GS.textButton}>Entrar</Text>
+            </TouchableOpacity>              
+            }
+            <Text style={styles.registration}>
+                Ainda não tem uma conta?   
+            </Text>
+            <Text style={styles.linkSubscribe} onPress={() => navigation.navigate("UserRegister")}>
+                Cadastre-se
+            </Text>
+            <View style={{height:10}}/>
+    </>
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+    </ScrollView>
     )
 }
 
