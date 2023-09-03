@@ -32,7 +32,7 @@ cd BarberProject
 Install the dependencies
 
 ```bash
-npx install 
+npm install 
 ```
 
 Start the server
